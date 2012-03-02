@@ -1,0 +1,93 @@
+# zshenv specific to machine local
+# path setting
+for prefix in '/usr/osxws' '/usr/local'; do
+    if [ -d "$prefix" ]; then
+        for pth in "$prefix/bin" "$prefix/sbin"; do
+            if ! echo "$PATH" | /usr/bin/grep -q "$pth"; then
+                PATH="$pth:$PATH"
+            fi
+        done
+        for pth in "$prefix/share/man" "$prefix/man"; do
+            if ! echo "$MANPATH" | /usr/bin/grep -q "$pth"; then
+                MANPATH="$pth:$MANPATH"
+            fi
+        done
+        if ! echo "$FPATH" | /usr/bin/grep -q "$prefix/share/zsh/site-functions"; then
+            FPATH="$pth:$FPATH"
+        fi
+    fi
+done
+for pth in "$HOME/Library/bin" "$HOME/bin"; do
+    if ! echo "$PATH" | /usr/bin/grep -q "$pth"; then
+        PATH="$pth:$PATH"
+    fi
+done
+unset prefix pth
+export PATH MANPATH
+export FPATH="$HOME/.zsh/site-functions:$FPATH"
+
+# Intel Compiler and Intel Math Kernel Library
+if [ -f /opt/intel/cce/current/bin/iccvars.sh ]; then
+    . /opt/intel/cce/current/bin/iccvars.sh
+fi
+if [ -f /opt/intel/fce/current/bin/ifortvars.sh ]; then
+    . /opt/intel/fce/current/bin/ifortvars.sh
+fi
+case "$OSTYPE" in
+    darwin*)
+        export MKL_PATH='/Library/Frameworks/Intel_MKL.framework/Versions/Current'
+        ;;
+    linux*)
+        export MKL_PATH='/opt/intel/mkl/current'
+        ;;
+esac
+if [ -f "$MKL_PATH/tools/environment/mklvarsem64t.sh" ]; then
+    . "$MKL_PATH/tools/environment/mklvarsem64t.sh"
+fi
+unset MKL_PATH
+
+# environment variables for gem
+if [ -x `which gem` ]; then
+    case "$OSTYPE" in
+        darwin*)
+            export GEM_PATH='/usr/lib/ruby/gems/1.8:/Library/Ruby/Gems/1.8'
+            export GEM_HOME="$HOME/Library/Ruby/Gems/1.8/gems"
+            ;;
+        linux*)
+            export GEM_PATH='/usr/lib/ruby/gems/1.8'
+            export GEM_HOME="$HOME/lib/ruby/gems/1.8"
+            ;;
+        freebsd*)
+            export GEM_PATH='/usr/local/lib/ruby/gems/1.8'
+            export GEM_HOME="$HOME/lib/ruby/gems/1.8"
+            ;;
+    esac
+    if ! echo "$PATH" | /usr/bin/grep -q "$GEM_HOME/bin"; then
+        PATH="$GEM_HOME/bin:$PATH"
+    fi
+    export PATH
+fi
+
+# personal texmf
+export TEXMFHOME="$HOME/Library/texmf"
+export TEXMFVAR="$TEXMFHOME"
+export TEXMFCONFIG="$TEXMFHOME"
+
+# proxy setting
+proxy_server='proxy.ritsumei.ac.jp'
+proxy_port='3128'
+case "$OSTYPE" in
+    darwin*)
+        if [ -n "`system_profiler SPNetworkDataType| grep $proxy_server`" ]; then
+            export http_proxy="http://$proxy_server:$proxy_port/"
+            export https_proxy="http://$proxy_server:$proxy_port/"
+            if [ -x "`which newsbeuter`" ]; then
+                echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
+                echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
+                alias newsbeuter='command newsbeuter -C ~/.newsbeuter/config-proxy'
+            fi
+        fi
+        ;;
+esac
+unset proxy_server proxy_port
+

@@ -1,0 +1,6 @@
+[submodule "vim/vundle"]
+	path = vim/vundle
+	url = https://github.com/gmarik/vundle.git
+[submodule "vim/tiny-templates"]
+	path = vim/tiny-templates
+	url = https://uchida@github.com/uchida/tiny-templates.git

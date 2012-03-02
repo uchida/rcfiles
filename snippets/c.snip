@@ -1,0 +1,14 @@
+snippet     for_C99
+abbr        for () {}
+    for (int ${1:i = 0; ${2:i < N}; ${++i}) {
+        ${0}
+    }
+
+snippet MPI_Send
+    MPI_Send(${1:sendbuf}, ${2:count}, ${3:MPI_TYPE}, ${4:dst_rank}, ${5:tag}, ${6:MPI_COMM_WORLD});
+
+snippet MPI_Recv
+    MPI_Recv(${1:recvbuf}, ${2:count}, ${3:MPI_TYPE}, ${4:src_rank}, ${5:tag}, ${6:MPI_COMM_WORLD}, ${7:mpi_status});
+
+snippet MPI_Reduce
+    MPI_Reduce(${1:sendbuf}, ${2:recvbuf}, ${3:count}, ${4:MPI_TYPE}, ${5:MPI_OP}, ${6:dst_rank}, ${7:MPI_COMM_WORLD}); 

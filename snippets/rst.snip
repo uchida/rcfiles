@@ -1,0 +1,25 @@
+snippet     role
+abbr        :role:`...`
+	:${1:role}:\`${2}\` ${0}
+
+snippet     directive
+abbr        .. directive::...
+	.. ${1:directive}::
+	
+	   ${2}
+		
+snippet     math_role
+abbr        :math:`...`
+	:math:\`${1}\` ${0}
+
+snippet     math_directive
+abbr        .. math::...
+	
+	.. math::
+	
+	   ${1}
+		
+snippet     leftright	
+abbr        \left(...\right)
+	\left${1:left}${2}\right${3:right}${0}
+	

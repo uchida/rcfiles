@@ -1,0 +1,6 @@
+# newsbeuter config specfit to machine local
+
+# browse and bookmark with original commands
+#browser ~/bin/open_url.sh %s
+#bookmark-cmd "~/bin/bookmark.py"
+#bookmark-interactive no

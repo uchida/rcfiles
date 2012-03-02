@@ -1,0 +1,66 @@
+" vimrc specific to machine local
+
+" use dark background
+set background=dark
+
+" Vundle
+filetype off
+set rtp+=~/.vim/vundle/
+call vundle#rc()
+Bundle 'skk.vim'
+Bundle 'spec.vim'
+Bundle 'autodate.vim'
+Bundle 'pythoncomplete'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplcache-snippets-complete'
+filetype plugin indent on
+
+" skk.vim: Japanese SKK
+" http://www.vim.org/scripts/script.php?script_id=1589
+let skk_jisyo='$HOME/.emacs.d/skk/skk-jisyo'
+"let skk_large_jisyo='/usr/osxws/share/skk/SKK-JISYO.L'
+let skk_auto_save_jisyo=1
+let skk_keep_state=0
+let skk_egg_like_newline=1
+let skk_show_annotation=1
+let skk_use_face=1
+let skk_kutouten_type='jp'
+
+" spec.vim: spec file plugin 
+" http://www.vim.org/scripts/script.php?script_id=98
+language time C 
+"let spec_chglog_format='%a %b %e %Y Your Name <user@example.com>'
+autocmd BufNewFile,BufRead *.spec setf spec
+
+" autodate.vim: A customizable plugin to update time stamps automatically
+" http://www.vim.org/scripts/script.php?script_id=291
+let g:autodate_disable=0
+let g:autodate_lines=20
+let g:autodate_keyword_pre='Last modified: '
+let g:autodate_keyword_post='$'
+let g:autodate_format='%a %e %b %T %Z %Y'
+
+" pythoncomplete: Python Omni Completion
+" http://www.vim.org/scripts/script.php?script_id=1542
+set completeopt-=preview
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+
+" neocomplecache: Ultimate auto completion system for Vim
+" https://github.com/Shougo/neocomplcache
+let g:neocomplcache_enable_at_startup=1 
+let g:neocomplcache_temporary_dir=expand('~/.vim/neocon')
+let g:neocomplcache_enable_underbar_completion = 1
+inoremap <expr><C-g> neocomplcache#undo_completion()
+inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><C-h> neocomplcache#smart_close_popup().”\<C-h>”
+if !exists('g:neocomplcache_omni_patterns')
+    let g:neocomplcache_omni_patterns = {}
+endif
+
+" neocomplcache-snippets-complete
+" https://github.com/Shougo/neocomplcache-snippets-complete
+let g:NeoComplCache_SnippetsDir = '~/.vim/snippets'
+" smart return to expand snippets
+imap <expr><CR> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
+

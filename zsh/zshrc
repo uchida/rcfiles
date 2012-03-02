@@ -1,0 +1,116 @@
+# zshrc
+# about (un)setopt option, see man zshoptions
+# about autoload module, see man zshcontrib
+
+# exec tmux or screen
+if [ -x "`which tmux`" ]; then
+    if [ -z "`ps axc|grep tmux`" ]; then
+        exec tmux -2
+    elif [ -n "$SSH_CLIENT" ]; then
+        exec tmux -2 attach
+    fi
+elif [ -x "`which screen`" ]; then
+    if [ -z "`ps axc|grep screen`" ]; then
+        exec screen -D -RR
+    fi
+fi
+
+# a cache directory for completion and history
+test ! -d "$HOME/.zsh/cache" && mkdir -p "$HOME/.zsh/cache"
+
+# use completion
+autoload -U compinit; compinit -u -d "$HOME/.zsh/cache/zcompdump"
+# use color
+autoload colors; colors
+
+# do not send HUP signals to background job
+setopt no_hup
+# do not use automatically menu completion
+unsetopt auto_menu
+# if a command is not executable and it is a directory, cd to it
+setopt auto_cd
+# change directory with automatically pushd it
+setopt auto_pushd
+# expand a filename after =, for example foo=~/bar/...
+setopt magic_equal_subst
+# expand =filename as a path of filename
+setopt equals
+# expand valuables in prompt
+setopt prompt_subst
+# do not append duplicate commands to history
+setopt hist_ignore_dups
+setopt share_history
+# do not append the history (fc -l) command to history
+setopt hist_no_store
+# reduce unnecessary blanks in command
+setopt hist_reduce_blanks
+# do not append duplicated directories to history
+setopt pushd_ignore_dups
+# histroy file setting
+HISTFILE="$HOME/.zsh/cache/history"
+HISTSIZE=50000
+SAVEHIST=50000
+
+# use Emacs keybind
+bindkey -e
+# C-p(n) as history search back(forward)
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
+
+# editor
+export EDITOR=vi
+# use vim if executable
+if [ -x "`which vim`" ]; then
+    alias vi=vim
+    export EDITOR=vim
+fi
+# pager
+export PAGER=less
+export MANPAGER=less
+export LESS='-R'
+
+# the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
+PROMPT="%m:%(3~,.../%2~,%~) $USER> "
+# the prompt shows host with red color in the ssh connection
+if [ -n "$SSH_CLIENT" ]; then
+    PROMPT="%{$fg[red]%}%m%{$reset_color%}:%(3~,.../%2~,%~) $USER> "
+fi
+
+# aliases
+alias rm='rm -i'
+alias cp='cp -i'
+alias eng='export LANG=C LANGUAGE=C LC_ALL=C'
+alias gd='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"'
+alias bell='echo "\a"'
+# complete filename via command-suffix correspondance
+compctl -/g '*.(eps|ps|pdf)' gv
+compctl -/g '*.dvi' xdvi
+compctl -/g '*.dat' xgraph
+compctl -/g '*.yap' yaplot
+compctl -/g '*.plt' gnuplot
+# OS dependent setting
+case "$OSTYPE" in
+    linux* | msys | cygwin)
+    alias ls='ls -F --color=auto'
+    alias ll='ls -la'
+    alias la='ls -a'
+    ;;
+    freebsd*)
+    alias ls='ls -G'
+    alias ll='ls -lha'
+    alias la='ls -a'
+    alias top='top -o cpu'
+    ;;
+    darwin*)
+    alias ls='ls -G'
+    alias ll='ls -lha'
+    alias la='ls -a'
+    alias top='top -o cpu'
+    ;;
+esac
+
+# load machine specific settings
+if [ -f "$HOME/.zsh/zshrc-local" ]; then
+    . $HOME/.zsh/zshrc-local
+fi
+

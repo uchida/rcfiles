@@ -1,0 +1,26 @@
+# screenrc
+# see man screen
+
+# set C-t to the prefix key
+escape ^t^t
+# do not show the startup message
+startup_message off
+# auto detach when suddenly connection closed
+autodetach on
+# utf-8
+defkanji utf-8
+defencoding utf-8
+# statusline
+hardstatus alwayslastline "%{= kr}%H%{= kw} %`%-w%{= rw}%n %t%{-}%+w"
+# background-color-erase
+defbce on
+# scrollback length
+defscrollback 10000
+# disable visual bell
+vbell off
+# a message displaying time
+msgwait 10
+# shorter sequence detection time
+maptimeout 10
+altscreen on
+

@@ -1,0 +1,190 @@
+" vimrc
+" -*- coding: utf-8 -*-
+" vim: fileencoding=utf-8
+
+" use vim, do not use vi compatible mode
+set nocompatible
+" use filetype plugin, indent and syntax highlighting
+filetype plugin on
+filetype indent on
+syntax on
+if &term == "screen"
+    set t_kN=^[[6;*~
+    set t_kP=^[[5;*~
+endif
+" complete with list and longest common string
+set wildmode=list:longest
+" 'filename [modification status][fileformat] line ,column percentage%'
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+" always show status line
+set laststatus=2
+" show vim command in the last line of screen
+set showcmd
+" show line number
+set number
+" show matching braket
+set showmatch
+" use incremental search
+set incsearch
+set ignorecase
+" do not ignore case when searching keyword contains capital case
+set smartcase
+" search with periodic boundary
+set wrapscan
+" highlight search
+set hlsearch
+" Esc, Esc erase highlight search
+nnoremap <Esc><Esc> :nohlsearch<CR>
+" indent/tab
+set cindent
+set expandtab
+set textwidth=0
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+" backspace key erase everything
+set backspace=indent,eol,start
+" see :help fo-table
+set formatoptions+=1mM
+" see :help hidden
+set hidden
+" use backup if not vms
+if has("vms")
+    set nobackup
+else
+    set backup
+endif
+" remenber 50 command line history
+set history=50
+" see :help 'viminfo'
+set viminfo='20,\"10000,f1,n$HOME/.vim/viminfo
+" restore last cursor positions :help restore-cursor
+if has("autocmd")
+    autocmd BufReadPost * 
+                \ if line("'\"") > 1 && line("'\"") <= line("$") | 
+                \     exe "normal! g`\"" |
+                \ endif
+endif
+" encoding and fileformat
+set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp,default,latin
+set fileformats=unix,dos,mac
+" treat ambigous width characters, for example  □,  ○, as double width
+if exists('&ambiwidth')
+    set ambiwidth=double
+endif
+" Highlight ZenkakuSpace, double width space
+highlight ZenkakuSpace ctermbg=white
+match ZenkakuSpace /　/
+" autowrite when cursor is hold
+set autowrite
+if has("autocmd")
+    autocmd CursorHold * silent! wall
+    autocmd CursorHoldI * silent! wall
+endif
+" show cursorline when cursor is hold
+if has("autocmd")
+    augroup vimrc-auto-cursorline
+        autocmd!
+        autocmd CursorMoved,CursorMovedI,WinLeave * setlocal nocursorline
+        autocmd CursorHold,CursorHoldI * setlocal cursorline
+    augroup END
+endif
+" highlight cursorline
+highlight CursorLine cterm=underline
+" change statusline color in insert-mode
+let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+if has('syntax')
+  augroup InsertHook
+    autocmd!
+    autocmd InsertEnter * call s:StatusLine('Enter')
+    autocmd InsertLeave * call s:StatusLine('Leave')
+  augroup END
+endif
+let s:slhlcmd = ''
+function! s:StatusLine(mode)
+  if a:mode == 'Enter'
+    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+    silent exec g:hi_insert
+  else
+    highlight clear StatusLine
+    silent exec s:slhlcmd
+  endif
+endfunction
+function! s:GetHighlight(hi)
+  redir => hl
+  exec 'highlight '.a:hi
+  redir END
+  let hl = substitute(hl, '[\r\n]', '', 'g')
+  let hl = substitute(hl, 'xxx', '', '')
+  return hl
+endfunction
+" keymap
+nnoremap <Space>w :update<CR>
+nnoremap <Space>q :quit<CR>
+" Emacs like keybind in insert mode
+inoremap <C-a> <Esc>^<Insert>
+inoremap <C-e> <Esc>$<Insert>
+inoremap <C-k> <Right><Esc>d$A
+inoremap <C-y> <Esc>p<Insert><Right>
+inoremap <C-d> <Del>
+" Emacs like keybind in command mode
+cnoremap <C-a> <Home>
+cnoremap <C-e> <Left>
+cnoremap <C-d> <Del>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Right>
+cnoremap <C-g> <Esc>
+" Emacs like kill and yank
+cnoremap <C-k> <C-\>eCopyCommandLine()<CR><Del><C-r>1
+cnoremap <C-y> <C-r>-
+function! CopyCommandLine()
+    " substitue yanking text, from cursor to end of line, to @-
+    let @-=strpart(getcmdline(), getcmdpos()-1)
+    " substitute not yanking text, from start of line to cursor, to @0
+    let @1=strpart(getcmdline(), 0, getcmdpos()-1)
+endfunction
+" for US keyboard
+nmap ; :
+" F11 toggle paste mode
+set pastetoggle=<F11>
+" auto insertion of templates
+if has("autocmd")
+    autocmd BufNewFile Makefile 0r $HOME/.vim/templates/Makefile
+    autocmd BufNewFile *.c 0r $HOME/.vim/templates/template.c
+    autocmd BufNewFile *.cpp 0r $HOME/.vim/templates/template.cpp
+    autocmd BufNewFile *.f   0r $HOME/.vim/templates/template.f
+    autocmd BufNewFile *.sh   0r $HOME/.vim/templates/template.sh
+    autocmd BufNewFile *.plt 0r $HOME/.vim/templates/template.plt
+    autocmd BufNewFile *.py  0r $HOME/.vim/templates/template.py
+    autocmd BufNewFile *.rb  0r $HOME/.vim/temrbates/temrbate.rb
+    autocmd BufNewFile *.pl  0r $HOME/.vim/templates/template.pl
+    autocmd BufNewFile *.html 0r $HOME/.vim/templates/template.html
+    autocmd BufNewFile *.tex 0r $HOME/.vim/templates/template.tex
+    autocmd BufNewFile *.rst 0r $HOME/.vim/templates/template.rst
+    autocmd BufNewFile *.h   call IncludeGuard()
+endif
+function! IncludeGuard()
+    let fl = getline(1)
+    if fl =~ "^#if"
+        return
+    endif
+    let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+    normal! gg
+    execute "normal! i#ifndef " . gatename . "_INCLUDED"
+    execute "normal! o#define " . gatename . "_INCLUDED\<CR>\<CR>\<CR>\<CR>"
+    execute "normal! Go#endif /* " . gatename . "_INCLUDED */"
+endfunction
+if has("autocmd")
+    " for Makefile
+    autocmd BufRead Makefile setlocal noexpandtab
+    " setting to edit crontab see :help crontab
+    autocmd BufRead /tmp/crontab.* set backupcopy=yes
+    " quit help with only type q
+    autocmd FileType help nnoremap <buffer> q <C-w>c
+    " quit quickfix with only type q
+    autocmd QuickfixCmdPost make noremap <buffer> q :cclose<CR>
+endif
+" load machine specific vimrc
+if filereadable(expand('~/.vim/vimrc-local'))
+   source ~/.vim/vimrc-local
+endif
