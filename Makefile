@@ -19,7 +19,7 @@ install_vim:
 	rm -rf ~/.vim/templates;
 	ln -s `pwd`/vim/tiny-templates ~/.vim/templates
 	rm -rf ~/.vim/snippets;
-	ln -s `pwd`/snippets ~/.vim/snippets
+	ln -s `pwd`/vim/snippets ~/.vim/snippets
 	test -f ~/.vim/vimrc-local || cp `pwd`/vim/vimrc-local.sample ~/.vim/vimrc-local
 	vim -c :BundleInstall -c :quitall
 
