@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # zshrc specific to machine local
 # command aliases
 alias mew='emacs -nw -e mew'

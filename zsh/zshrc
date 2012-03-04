@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # zshrc
 # about (un)setopt option, see man zshoptions
 # about autoload module, see man zshcontrib
