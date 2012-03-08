@@ -2,6 +2,7 @@
 
 " use dark background
 set background=dark
+let g:plugin_verifyenc_disable=1
 
 " Vundle
 filetype off
