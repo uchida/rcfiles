@@ -9,6 +9,7 @@ filetype off
 set rtp+=~/.vim/vundle/
 call vundle#rc()
 Bundle 'spec.vim'
+Bundle 'sudo.vim'
 Bundle 'autodate.vim'
 Bundle 'pythoncomplete'
 Bundle 'tyru/eskk.vim'
@@ -41,8 +42,8 @@ let g:autodate_format='%a %e %b %T %Z %Y'
 
 " pythoncomplete: Python Omni Completion
 " http://www.vim.org/scripts/script.php?script_id=1542
-set completeopt-=preview
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+set splitbelow " show docstring in window below
 
 " neocomplecache: Ultimate auto completion system for Vim
 " https://github.com/Shougo/neocomplcache
@@ -52,7 +53,7 @@ let g:neocomplcache_enable_underbar_completion = 1
 inoremap <expr><C-g> neocomplcache#undo_completion()
 inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><C-h> neocomplcache#smart_close_popup().”\<C-h>”
+inoremap <expr><C-h> neocomplcache#smart_close_popup()." \<C-h>"
 if !exists('g:neocomplcache_omni_patterns')
     let g:neocomplcache_omni_patterns = {}
 endif
@@ -62,4 +63,5 @@ endif
 let g:NeoComplCache_SnippetsDir = '~/.vim/snippets'
 " smart return to expand snippets
 imap <expr><CR> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
+smap <Tab> <Plug>(neocomplcache_snippets_expand)
 
