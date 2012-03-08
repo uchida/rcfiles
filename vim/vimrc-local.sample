@@ -8,24 +8,22 @@ let g:plugin_verifyenc_disable=1
 filetype off
 set rtp+=~/.vim/vundle/
 call vundle#rc()
-Bundle 'skk.vim'
 Bundle 'spec.vim'
 Bundle 'autodate.vim'
 Bundle 'pythoncomplete'
+Bundle 'tyru/eskk.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neocomplcache-snippets-complete'
 filetype plugin indent on
 
-" skk.vim: Japanese SKK
-" http://www.vim.org/scripts/script.php?script_id=1589
-let skk_jisyo='$HOME/.emacs.d/skk/skk-jisyo'
-"let skk_large_jisyo='/usr/osxws/share/skk/SKK-JISYO.L'
-let skk_auto_save_jisyo=1
-let skk_keep_state=0
-let skk_egg_like_newline=1
-let skk_show_annotation=1
-let skk_use_face=1
-let skk_kutouten_type='jp'
+" eskk.vim: aims to provide powerful input method platform in Vim
+" https://github.com/tyru/eskk.vim
+let g:eskk#dictionary={'path': "~/.emacs.d/skk/jisyo", 'sorted': 0, 'encoding': 'euc-jp'}
+"let g:eskk#large_dictionary='/usr/osxws/share/skk/SKK-JISYO.L'
+let g:eskk#directory='~/.vim/eskk'
+" remap to disable eskk instead of switching ascii-mode
+runtime! plugin/eskk.vim
+EskkMap -remap l <Plug>(eskk:disable)
 
 " spec.vim: spec file plugin 
 " http://www.vim.org/scripts/script.php?script_id=98
