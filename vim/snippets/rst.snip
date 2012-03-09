@@ -1,25 +1,121 @@
-snippet     role
-abbr        :role:`...`
+snippet  link
+abbr     link
+	\`${1:text} <${2:uri}>\`_ ${0}
+
+snippet  role
+abbr    role
 	:${1:role}:\`${2}\` ${0}
 
-snippet     directive
-abbr        .. directive::...
+snippet  directive
+abbr     directive
 	.. ${1:directive}::
+		${2::option: value}
 	
-	   ${2}
-		
-snippet     math_role
-abbr        :math:`...`
+		${3}
+
+snippet  image
+abbr     image
+	.. image:: ${1:file name}
+		${2::alt: $\{3:alteanate text\}}
+		${4::scale: $\{5:100 %\}}
+		${6::target: $\{7:URI of reference name\}}
+	
+	${0}
+
+snippet  figure
+abbr     figure
+	.. figure:: ${1:file name}
+		${2::alt: $\{3:alteanate text\}}
+		${4::scale: $\{5:100 %\}}
+		${6::target: $\{7:URI of reference name\}}
+	
+		${8:caption paragraph}
+	
+	${0}
+
+snippet  note
+abbr     note
+	.. note::
+	
+		${1}
+
+snippet  warning
+abbr     warning
+	.. warning::
+	
+		${1}
+
+snippet  download
+abbr     download
+	:download:\`${1:text} <${2:uri}>\`${0}
+
+snippet  mathexpression
+abbr     mathrole
 	:math:\`${1}\` ${0}
 
-snippet     math_directive
-abbr        .. math::...
-	
+snippet  equation
+abbr     mathdirective
 	.. math::
 	
-	   ${1}
-		
-snippet     leftright	
-abbr        \left(...\right)
-	\left${1:left}${2}\right${3:right}${0}
+		${1}
+
+snippet  codeblock
+abbr     codeblock
+	.. code-block:: ${1:lang}
+		${2::linenos:}
 	
+		${3}
+
+# mathematical expressions in LaTeX
+snippet     leftright
+abbr        \left(...\right)
+	\left${1:left} ${2:...} \right${3:right} ${0}
+
+snippet     frac
+abbr        \frac{...}{...}
+	\frac{${1:numerator}}{${2:denominator}} ${0}
+
+snippet     lim
+abbr        \lim
+	\lim${1:_\{${2\}\}} ${0}
+
+snippet     sum
+abbr        \sum
+	\sum${1:_\{${2:lower\}\}${3:^\{${4:upper\}\}\}} ${0}
+
+snippet     prod
+abbr        \prod
+	\prod${1:_\{${2:lower\}\}${3:^\{${4:upper\}\}\}} ${0}
+
+snippet     int
+abbr        \int
+	\int${1:_\{${2:lower\}\}${3:^\{${4:upper\}\}\}} ${0}
+
+snippet     exp
+abbr        \exp
+	\exp{${1}} ${0}
+
+snippet     cos
+abbr        \cos
+	\cos{${1}} ${0}
+
+snippet     sin
+abbr        \sin
+	\sin{${1}} ${0}
+
+snippet     sqrt
+abbr        \sqrt{...}
+	\sqrt{${1:...}} ${0}
+
+snippet     power
+abbr        power
+	${1}^{${2}} ${0}
+
+snippet     diff
+abbr        diff
+	\frac{d{${1}}}{d{${2}}} ${0}
+
+snippet     pdiff
+abbr        pdiff
+	\frac{\partial{${1}}}{\partial{${2}}} ${0}
+
