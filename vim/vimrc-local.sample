@@ -11,7 +11,8 @@ call vundle#rc()
 Bundle 'spec.vim'
 Bundle 'sudo.vim'
 Bundle 'autodate.vim'
-Bundle 'pythoncomplete'
+"Bundle 'davidhalter/jedi-vim'
+"Bundle 'pythoncomplete'
 Bundle 'tyru/eskk.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neocomplcache-snippets-complete'
@@ -87,4 +88,22 @@ function! OverwriteClangCompKeys()
             \   neocomplcache#sources#snippets_complete#expandable() ?
             \           "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
 endfunction
+
+" pythoncomplete: Python Omni Completion
+" http://www.vim.org/scripts/script.php?script_id=1542
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+
+" jedi-vim: awesome Python autocompletion with VIM
+" https://github.com/davidhalter/jedi-vim
+set completeopt=longest,menuone,preview
+set splitbelow " show docstring in window below
+let g:neocomplcache_enable_auto_select=0
+let g:jedi#auto_initialization=1
+let g:jedi#popup_on_dot=0
+let g:jedi#show_function_definition=0
+"autocmd  FileType python let b:did_ftplugin=1
+if !exists('g:neocomplcache_force_omni_patterns')
+      let g:neocomplcache_force_omni_patterns={}
+endif
+let g:neocomplcache_force_omni_patterns.python='[^. \t]\.\w*'
 
