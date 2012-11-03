@@ -1,17 +1,17 @@
 # -*- shell-script -*-
-# zshrc
+# ~/.zshrc
 # about (un)setopt option, see man zshoptions
 # about autoload module, see man zshcontrib
 
 # exec tmux or screen
-if [ -x "`which tmux`" ]; then
-    if [ -z "`ps axc|grep tmux`" ]; then
+if [ -x "$(which tmux)" ]; then
+    if [ -z "$(ps uxc | grep tmux)" ]; then
         exec tmux -2
     elif [ -n "$SSH_CLIENT" ]; then
         exec tmux -2 attach
     fi
-elif [ -x "`which screen`" ]; then
-    if [ -z "`ps axc|grep screen`" ]; then
+elif [ -x "$(which screen)" ]; then
+    if [ -z "$(ps uxc | grep screen)" ]; then
         exec screen -D -RR
     fi
 fi
@@ -61,7 +61,7 @@ bindkey '^N' history-beginning-search-forward
 # editor
 export EDITOR=vi
 # use vim if executable
-if [ -x "`which vim`" ]; then
+if [ -x "$(which vim)" ]; then
     alias vi=vim
     export EDITOR=vim
 fi
@@ -112,6 +112,6 @@ esac
 
 # load machine specific settings
 if [ -f "$HOME/.zsh/zshrc-local" ]; then
-    . $HOME/.zsh/zshrc-local
+    source "$HOME/.zsh/zshrc-local"
 fi
 
