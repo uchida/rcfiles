@@ -81,13 +81,14 @@ if !exists('g:neocomplcache_include_paths')
 endif
 "let g:neocomplcache_include_paths.cpp=".,/usr/include/c++/4.2.1,/usr/osxws/include"
 
-" neocomplcache-snippets-complete
-" https://github.com/Shougo/neocomplcache-snippets-complete
-let g:NeoComplCache_SnippetsDir='~/.vim/snippets'
+" neosnippet: adds snippet support to Vim
+" https://github.com/Shougo/neosnippet
+let g:neocomplcache_snippets_dir='~/.vim/snippets'
 " smart return to expand snippets
-imap <expr><CR> neocomplcache#sources#snippets_complete#expandable() ?
-            \ "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
-smap <Tab> <Plug>(neocomplcache_snippets_expand)
+imap <expr><CR> neosnippet#expandable() ?
+            \ "\<Plug>(neosnippet_jump_or_expand)" : "\<CR>"
+vmap <expr><TAB> neosnippet#expandable() ?
+            \ "\<Plug>(neosnippet_jump_or_expand)" : "\<Tab>"
 
 " neocomplcache & clang_complete
 let g:neocomplcache_force_overwrite_completefunc=1
