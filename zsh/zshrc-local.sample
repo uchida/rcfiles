@@ -72,14 +72,21 @@ if [ -x "$(which gisty)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
 fi
 # OS dependent command aliases
+if [ -f "$HOME/Library/bin/fcd.sh" ]; then
+    alias fcd="source $HOME/Library/bin/fcd.sh"
+fi
+if [ -x /Applications/MacVim.app/Contents/MacOS/Vim ]; then
+    alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+    export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
+fi
+if [ -x /Applications/GitX.app/Contents/Resources/gitx ]; then
+    alias gitx=/Applications/GitX.app/Contents/Resources/gitx
+fi
+if [ -x /Applications/Conversion.app/Contents/Resources/ffmpeg ]; then
+    alias ffmpeg=/Applications/Conversion.app/Contents/Resources/ffmpeg
+fi
 case "$OSTYPE" in
     darwin*)
-        if [ -f "$HOME/Library/bin/fcd.sh" ]; then
-            alias fcd="source $HOME/Library/bin/fcd.sh"
-        fi
-        if [ -x '/Applications/MacVim.app/Contents/MacOS/Vim' ]; then
-            alias vim='/Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-        fi
         # customize for X11
         function activate() { osascript -e "tell application \"$@\" to activate" }
         if [ -z "$SSH_CLIENT" ]; then

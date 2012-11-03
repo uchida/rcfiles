@@ -89,22 +89,14 @@ case "$OSTYPE" in
     alias ll='ls -la'
     alias la='ls -a'
     ;;
-    freebsd*)
-    alias ls='ls -G'
-    alias ll='ls -lha'
-    alias la='ls -a'
-    alias top='top -o cpu'
-    ;;
-    darwin*)
+    freebsd* | darwin*)
     alias ls='ls -G'
     alias ll='ls -lha'
     alias la='ls -a'
     alias top='top -o cpu'
     ;;
 esac
-
 # load machine specific settings
 if [ -f "$HOME/.zsh/zshrc-local" ]; then
     source "$HOME/.zsh/zshrc-local"
 fi
-
