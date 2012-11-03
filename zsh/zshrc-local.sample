@@ -72,6 +72,17 @@ if [ -x "$(which gisty)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
     export GISTY_ACCESS_TOKEN=""
 fi
+# perlbrew
+export PERLBREW_ROOT="$HOME/.perlbrew"
+export PERLBREW_HOME="$HOME/.perlbrew"
+export PERL_CPANM_HOME="$HOME/.perlbrew/cpanm"
+if [ -s "$HOME/.perlbrew/etc/bashrc" ]; then
+    source "$HOME/.perlbrew/etc/bashrc"
+fi
+# rvm
+if [ -s "$HOME/.rvm/scripts/rvm" ]; then
+    source "$HOME/.rvm/scripts/rvm"
+fi
 # OS dependent command aliases
 if [ -f "$HOME/Library/bin/fcd.sh" ]; then
     alias fcd="source $HOME/Library/bin/fcd.sh"
