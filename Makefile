@@ -22,6 +22,7 @@ install_vim:
 	ln -s `pwd`/vim/snippets ~/.vim/snippets
 	test -f ~/.vim/vimrc-local || cp `pwd`/vim/vimrc-local.sample ~/.vim/vimrc-local
 	vim -c :BundleInstall -c :quitall
+	test -d ~/.vim/bundle && cd ~/.vim/bundle/jedi-vim; git submodule update --init
 
 install_tmux:
 	rm -f ~/.tmux.conf;
