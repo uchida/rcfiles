@@ -71,6 +71,10 @@ set fileformats=unix,dos,mac
 if exists('&ambiwidth')
     set ambiwidth=double
 endif
+" disable mousemode
+if has('mouse')
+    set mouse=""
+endif
 " Highlight ZenkakuSpace, double width space
 highlight ZenkakuSpace ctermbg=white
 match ZenkakuSpace /　/
