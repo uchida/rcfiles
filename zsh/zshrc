@@ -49,9 +49,8 @@ setopt hist_reduce_blanks
 setopt pushd_ignore_dups
 # histroy file setting
 HISTFILE="$HOME/.zsh/cache/history"
-HISTSIZE=50000
-SAVEHIST=50000
-
+HISTSIZE=100000
+SAVEHIST=100000
 # use Emacs keybind
 bindkey -e
 # C-p(n) as history search back(forward)
