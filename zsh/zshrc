@@ -83,12 +83,6 @@ alias cp='cp -i'
 alias eng='export LANG=C LANGUAGE=C LC_ALL=C'
 alias gd='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"'
 alias bell='echo "\a"'
-# complete filename via command-suffix correspondance
-compctl -/g '*.(eps|ps|pdf)' gv
-compctl -/g '*.dvi' xdvi
-compctl -/g '*.dat' xgraph
-compctl -/g '*.yap' yaplot
-compctl -/g '*.plt' gnuplot
 # OS dependent setting
 case "$OSTYPE" in
     linux* | msys | cygwin)

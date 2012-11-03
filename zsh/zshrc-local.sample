@@ -49,6 +49,13 @@ EOF
 source ~/.zsh/proxy
 unset proxy_server proxy_port
 }
+# complete filename via command-suffix correspondance
+compctl -/g '*.(eps|ps|pdf)' gv
+compctl -/g '*.dvi' xdvi
+compctl -/g '*.dat' xgraph
+compctl -/g '*.yap' yaplot
+compctl -/g '*.plt' gnuplot
+compctl -/g '*.src.rpm' rpmbuild
 # environment variables
 export CVS_RSH='ssh'
 export RSYNC_RSH='ssh'
