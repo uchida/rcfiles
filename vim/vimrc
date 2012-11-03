@@ -183,6 +183,7 @@ if has("autocmd")
     autocmd FileType help nnoremap <buffer> q <C-w>c
     " quit quickfix with only type q
     autocmd QuickfixCmdPost make noremap <buffer> q :cclose<CR>
+    autocmd BufRead *.rst setlocal softtabstop=3 shiftwidth=3
 endif
 " load machine specific vimrc
 if filereadable(expand('~/.vim/vimrc-local'))
