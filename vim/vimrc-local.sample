@@ -17,7 +17,7 @@ Bundle 'autodate.vim'
 "Bundle 'skk.vim'
 "Bundle 'tyru/eskk.vim'
 Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neocomplcache-snippets-complete'
+Bundle 'Shougo/neosnippets'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'osyo-manga/neocomplcache-clang_complete'
 filetype plugin indent on
