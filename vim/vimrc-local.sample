@@ -15,6 +15,8 @@ Bundle 'pythoncomplete'
 Bundle 'tyru/eskk.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neocomplcache-snippets-complete'
+Bundle 'Rip-Rip/clang_complete'
+Bundle 'osyo-manga/neocomplcache-clang_complete'
 filetype plugin indent on
 
 " eskk.vim: aims to provide powerful input method platform in Vim
@@ -40,28 +42,49 @@ let g:autodate_keyword_pre='Last modified: '
 let g:autodate_keyword_post='$'
 let g:autodate_format='%a %e %b %T %Z %Y'
 
-" pythoncomplete: Python Omni Completion
-" http://www.vim.org/scripts/script.php?script_id=1542
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-set splitbelow " show docstring in window below
+" clang_complete: Vim plugin that use clang for completing C/C++ code
+" https://github.com/Rip-Rip/clang_complete
+let g:clang_complete_auto=1
+let g:clang_use_library=1
+"let g:clang_library_path="/usr/lib"
+" quick fix
+let g:clang_periodic_quickfix=1
+let g:clang_complete_copen=1
 
 " neocomplecache: Ultimate auto completion system for Vim
 " https://github.com/Shougo/neocomplcache
-let g:neocomplcache_enable_at_startup=1 
+let g:neocomplcache_enable_at_startup=1
+let g:neocomplcache_enable_smart_case=1
+let g:neocomplcache_enable_camel_case_completion=1
 let g:neocomplcache_temporary_dir=expand('~/.vim/neocon')
-let g:neocomplcache_enable_underbar_completion = 1
-inoremap <expr><C-g> neocomplcache#undo_completion()
-inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
 inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><C-h> neocomplcache#smart_close_popup()." \<C-h>"
-if !exists('g:neocomplcache_omni_patterns')
-    let g:neocomplcache_omni_patterns = {}
+inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
+inoremap <expr><C-g> neocomplcache#undo_completion()
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+if !exists('g:neocomplcache_include_paths')
+    let g:neocomplcache_include_paths={}
 endif
+"let g:neocomplcache_include_paths.cpp=".,/usr/include/c++/4.2.1,/usr/osxws/include"
 
 " neocomplcache-snippets-complete
 " https://github.com/Shougo/neocomplcache-snippets-complete
-let g:NeoComplCache_SnippetsDir = '~/.vim/snippets'
+let g:NeoComplCache_SnippetsDir='~/.vim/snippets'
 " smart return to expand snippets
-imap <expr><CR> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
+imap <expr><CR> neocomplcache#sources#snippets_complete#expandable() ?
+            \ "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
 smap <Tab> <Plug>(neocomplcache_snippets_expand)
+
+" neocomplcache & clang_complete
+let g:neocomplcache_force_overwrite_completefunc=1
+" overwrite <CR> map in ClangCompleteInit()
+autocmd FileType c,cpp,objc,objcpp call OverwriteClangCompKeys()
+function! OverwriteClangCompKeys()
+    autocmd InsertEnter * 
+            \ inoremap <expr><buffer><CR>
+            \   neocomplcache#smart_close_popup() . "\<CR>"
+    autocmd InsertEnter *
+            \ imap <expr><buffer><CR> 
+            \   neocomplcache#sources#snippets_complete#expandable() ?
+            \           "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
+endfunction
 
