@@ -27,26 +27,6 @@ unset prefix pth
 export PATH MANPATH
 export FPATH="$HOME/.zsh/site-functions:$FPATH"
 
-# Intel Compiler and Intel Math Kernel Library
-if [ -f /opt/intel/cce/current/bin/iccvars.sh ]; then
-    . /opt/intel/cce/current/bin/iccvars.sh
-fi
-if [ -f /opt/intel/fce/current/bin/ifortvars.sh ]; then
-    . /opt/intel/fce/current/bin/ifortvars.sh
-fi
-case "$OSTYPE" in
-    darwin*)
-        export MKL_PATH='/Library/Frameworks/Intel_MKL.framework/Versions/Current'
-        ;;
-    linux*)
-        export MKL_PATH='/opt/intel/mkl/current'
-        ;;
-esac
-if [ -f "$MKL_PATH/tools/environment/mklvarsem64t.sh" ]; then
-    . "$MKL_PATH/tools/environment/mklvarsem64t.sh"
-fi
-unset MKL_PATH
-
 # environment variables for gem
 if [ -x `which gem` ]; then
     case "$OSTYPE" in
@@ -79,3 +59,10 @@ if [ -s "$HOME/.zsh/proxy" ]; then
     source $HOME/.zsh/proxy
 fi
 
+# Intel Compiler and Intel Math Kernel Library
+intel_arch=$(test -z "$(uname -a | grep "x86_64")" && echo "ia32" || echo "intel64")
+for script in iccvars.sh ifortvars.sh; do
+    if [ -x /opt/intel/bin/$script ]; then
+    . /opt/intel/bin/$script $intel_arch
+fi
+unset intel_arch
