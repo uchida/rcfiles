@@ -27,28 +27,6 @@ unset prefix pth
 export PATH MANPATH
 export FPATH="$HOME/.zsh/site-functions:$FPATH"
 
-# environment variables for gem
-if [ -x `which gem` ]; then
-    case "$OSTYPE" in
-        darwin*)
-            export GEM_PATH='/usr/lib/ruby/gems/1.8:/Library/Ruby/Gems/1.8'
-            export GEM_HOME="$HOME/Library/Ruby/Gems/1.8/gems"
-            ;;
-        linux*)
-            export GEM_PATH='/usr/lib/ruby/gems/1.8'
-            export GEM_HOME="$HOME/lib/ruby/gems/1.8"
-            ;;
-        freebsd*)
-            export GEM_PATH='/usr/local/lib/ruby/gems/1.8'
-            export GEM_HOME="$HOME/lib/ruby/gems/1.8"
-            ;;
-    esac
-    if ! echo "$PATH" | /usr/bin/grep -q "$GEM_HOME/bin"; then
-        PATH="$GEM_HOME/bin:$PATH"
-    fi
-    export PATH
-fi
-
 # personal texmf
 export TEXMFHOME="$HOME/Library/texmf"
 export TEXMFVAR="$TEXMFHOME"
