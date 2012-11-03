@@ -13,21 +13,37 @@ Bundle 'sudo.vim'
 Bundle 'autodate.vim'
 "Bundle 'davidhalter/jedi-vim'
 "Bundle 'pythoncomplete'
-Bundle 'tyru/eskk.vim'
+"Bundle 'skk.vim'
+"Bundle 'tyru/eskk.vim'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/neocomplcache-snippets-complete'
 Bundle 'Rip-Rip/clang_complete'
 Bundle 'osyo-manga/neocomplcache-clang_complete'
 filetype plugin indent on
 
+" skk.vim : Japanese SKK 
+" http://www.vim.org/scripts/script.php?script_id=1589
+let skk_jisyo='~/.emacs.d/skk/jisyo'
+"let skk_large_jisyo='/usr/osxws/share/skk/SKK-JISYO.L'
+let skk_auto_save_jisyo=1
+let skk_keep_state=0
+let skk_egg_like_newline=1
+let skk_show_annotation=1
+let skk_use_face=1
+
 " eskk.vim: aims to provide powerful input method platform in Vim
 " https://github.com/tyru/eskk.vim
 let g:eskk#dictionary={'path': "~/.emacs.d/skk/jisyo", 'sorted': 0, 'encoding': 'euc-jp'}
 "let g:eskk#large_dictionary='/usr/osxws/share/skk/SKK-JISYO.L'
 let g:eskk#directory='~/.vim/eskk'
+let g:eskk#show_annotation=1
+let g:eskk#egg_like_newline=1
+let g:eskk#egg_like_newline_completion=1
+let g:eskk#enable_completion=0
+let g:eskk#keep_state=0
 " remap to disable eskk instead of switching ascii-mode
-runtime! plugin/eskk.vim
-EskkMap -remap l <Plug>(eskk:disable)
+"runtime! plugin/eskk.vim
+"EskkMap -remap l <Plug>(eskk:disable)
 
 " spec.vim: spec file plugin 
 " http://www.vim.org/scripts/script.php?script_id=98
