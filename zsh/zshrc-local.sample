@@ -19,6 +19,36 @@ if [ -x "$(which rlwrap)" ]; then
         fi
     done
 fi
+# proxy
+function reset_proxy () {
+unset http_proxy https_proxy ftp_proxy
+alias newsbeuter='command newsbeuter'
+echo "" > ~/.subversion/servers
+echo "" > ~/.zsh/proxy
+}
+function set_proxy () {
+proxy_server=proxy.ritsumei.ac.jp
+proxy_port=3128
+# newsbeuter
+if [ -x "$(which newsbeuter)" ]; then
+    echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
+    echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
+    alias newsbeuter='command newsbeuter -c ~/.newsbeuter/config-proxy'
+fi
+# subversion
+cat << EOF > ~/.subversion/servers
+[global]
+http-proxy-host = $proxy_server
+http-proxy-port = $proxy_port
+EOF
+cat << EOF > ~/.zsh/proxy
+export http_proxy="http://$proxy_server:$proxy_port"
+export https_proxy="http://$proxy_server:$proxy_port"
+export ftp_proxy="http://$proxy_server:$proxy_port"
+EOF
+source ~/.zsh/proxy
+unset proxy_server proxy_port
+}
 # environment variables
 export CVS_RSH='ssh'
 export RSYNC_RSH='ssh'

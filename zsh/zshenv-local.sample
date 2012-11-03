@@ -74,21 +74,8 @@ export TEXMFHOME="$HOME/Library/texmf"
 export TEXMFVAR="$TEXMFHOME"
 export TEXMFCONFIG="$TEXMFHOME"
 
-# proxy setting
-proxy_server='proxy.ritsumei.ac.jp'
-proxy_port='3128'
-case "$OSTYPE" in
-    darwin*)
-        if [ -n "`system_profiler SPNetworkDataType| grep $proxy_server`" ]; then
-            export http_proxy="http://$proxy_server:$proxy_port/"
-            export https_proxy="http://$proxy_server:$proxy_port/"
-            if [ -x "`which newsbeuter`" ]; then
-                echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
-                echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
-                alias newsbeuter='command newsbeuter -C ~/.newsbeuter/config-proxy'
-            fi
-        fi
-        ;;
-esac
-unset proxy_server proxy_port
+# source proxy setting when available
+if [ -s "$HOME/.zsh/proxy" ]; then
+    source $HOME/.zsh/proxy
+fi
 
