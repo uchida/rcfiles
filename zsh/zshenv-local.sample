@@ -4,22 +4,22 @@
 for prefix in '/usr/osxws' '/usr/local'; do
     if [ -d "$prefix" ]; then
         for pth in "$prefix/bin" "$prefix/sbin"; do
-            if ! echo "$PATH" | /usr/bin/grep -q "$pth"; then
+            if ! echo "$PATH" | grep -q "$pth"; then
                 PATH="$pth:$PATH"
             fi
         done
         for pth in "$prefix/share/man" "$prefix/man"; do
-            if ! echo "$MANPATH" | /usr/bin/grep -q "$pth"; then
+            if ! echo "$MANPATH" | grep -q "$pth"; then
                 MANPATH="$pth:$MANPATH"
             fi
         done
-        if ! echo "$FPATH" | /usr/bin/grep -q "$prefix/share/zsh/site-functions"; then
+        if ! echo "$FPATH" | grep -q "$prefix/share/zsh/site-functions"; then
             FPATH="$pth:$FPATH"
         fi
     fi
 done
 for pth in "$HOME/Library/bin" "$HOME/bin"; do
-    if ! echo "$PATH" | /usr/bin/grep -q "$pth"; then
+    if ! echo "$PATH" | grep -q "$pth"; then
         PATH="$pth:$PATH"
     fi
 done
