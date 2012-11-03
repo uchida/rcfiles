@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # zshrc specific to machine local
+
 # command aliases
-alias mew='emacs -nw -e mew'
 alias histop='cat "$HISTFILE"|nkf -w|cut -d" " -f1|sort|uniq -c|sort -nr'
 if [ -x "$(which a2ps)" ]; then
     alias a2ps='a2ps --prologue=color'
@@ -95,8 +95,12 @@ if [ -d /usr/osxws ]; then
     if [ -f /usr/osxws/etc/man.conf ]; then
         alias man='man -C /usr/osxws/etc/man.conf'
     fi
-    if [ -x "`which openemacs`" ]; then
+    if [ -n "$(ps uxc|grep Emacs)" ]; then
+        alias emacs='emacsclient -nw'
+        alias mew='openemacs -nw -e mew'
+    else
         alias emacs='openemacs'
+        alias mew='openemacs -nw -e mew'
     fi
     # use /usr/bin/less
     alias  less='/usr/bin/less'
