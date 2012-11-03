@@ -70,6 +70,7 @@ export LESSHISTFILE="$HOME/.zsh/cache/lesshst"
 # gisty
 if [ -x "$(which gisty)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
+    export GISTY_ACCESS_TOKEN=""
 fi
 # OS dependent command aliases
 if [ -f "$HOME/Library/bin/fcd.sh" ]; then
