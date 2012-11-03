@@ -42,9 +42,6 @@ let g:eskk#egg_like_newline=1
 let g:eskk#egg_like_newline_completion=1
 let g:eskk#enable_completion=0
 let g:eskk#keep_state=0
-" remap to disable eskk instead of switching ascii-mode
-"runtime! plugin/eskk.vim
-"EskkMap -remap l <Plug>(eskk:disable)
 
 " spec.vim: spec file plugin 
 " http://www.vim.org/scripts/script.php?script_id=98
