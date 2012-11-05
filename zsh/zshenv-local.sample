@@ -32,6 +32,19 @@ export TEXMFHOME="$HOME/Library/texmf"
 export TEXMFVAR="$TEXMFHOME"
 export TEXMFCONFIG="$TEXMFHOME"
 
+# perl setting with cpanm on user directory
+if [ -d "$HOME/Library/Perl" ]; then
+    if [ -z "$(echo $PATH | grep \"$HOME/Library/Perl/bin\")" ]; then
+        PATH="$HOME/Library/Perl/bin:$PATH"
+    fi
+    if [ -z "$(echo $MANPATH | grep \"$HOME/Library/Perl/man\")" ]; then
+        MANPATH="$HOME/Library/Perl/bin:$MANPATH"
+    fi
+    export PERL5LIB="$HOME/Library/lib/perl5:$PERL5LIB"
+    export PERL_CPANM_OPT="--local-lib=$HOME/Library/Perl"
+    export PERL_CPANM_HOME="$HOME/Library/Perl/cpanm"
+fi
+
 # source proxy setting when available
 if [ -s "$HOME/.zsh/proxy" ]; then
     source $HOME/.zsh/proxy
