@@ -45,6 +45,17 @@ if [ -d "$HOME/Library/Perl" ]; then
     export PERL_CPANM_HOME="$HOME/Library/Perl/cpanm"
 fi
 
+# ruby setting with rbenv
+if [ -d "$HOME/Library/rbenv"  ] ; then
+    export RBENV_ROOT="$HOME/Library/rbenv"
+    if [ -z "$(echo $PATH | grep \"$RBENV_ROOT/bin\")" ]; then
+        export PATH="$RBENV_ROOT/bin:$PATH"
+    fi
+    if [ -x $(which rbenv) ]; then
+        eval "$(rbenv init -)"
+    fi
+fi
+
 # source proxy setting when available
 if [ -s "$HOME/.zsh/proxy" ]; then
     source $HOME/.zsh/proxy
