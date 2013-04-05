@@ -4,3 +4,6 @@
 [submodule "vim/tiny-templates"]
 	path = vim/tiny-templates
 	url = https://uchida@github.com/uchida/tiny-templates.git
+[submodule "zsh/addons/zsh-completions"]
+	path = zsh/addons/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions

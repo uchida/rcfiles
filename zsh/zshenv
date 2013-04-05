@@ -9,6 +9,7 @@ umask 022
 # path settings
 export PATH=/usr/X11/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export MANPATH=/usr/X11R6/man:/usr/share/man
+fpath=("$HOME/.zsh/addons/zsh-completions/src" $fpath)
 # load machine specific settings
 if [ -f "$HOME/.zsh/zshenv-local" ]; then
     source "$HOME/.zsh/zshenv-local"
