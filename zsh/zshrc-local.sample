@@ -2,6 +2,11 @@
 # zshrc specific to machine local
 
 # command aliases
+export _Z_DATA="$HOME/.zsh/cache/z"
+source ~/.zsh/addons/z/z.sh
+precmd() {
+      _z --add "$(pwd -P)"
+  }
 alias histop='cat "$HISTFILE"|nkf -w|cut -d" " -f1|sort|uniq -c|sort -nr'
 if [ -x "$(which a2ps)" ]; then
     alias a2ps='a2ps --prologue=color'
