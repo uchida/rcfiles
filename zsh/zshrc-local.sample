@@ -41,15 +41,17 @@ if [ -x "$(which newsbeuter)" ]; then
     alias newsbeuter='command newsbeuter -c ~/.newsbeuter/config-proxy'
 fi
 # subversion
+if [ -d "$HOME/.subversion" ]; then
 cat << EOF > ~/.subversion/servers
 [global]
 http-proxy-host = $proxy_server
 http-proxy-port = $proxy_port
 EOF
+fi
 cat << EOF > ~/.zsh/proxy
-export http_proxy="http://$proxy_server:$proxy_port"
-export https_proxy="http://$proxy_server:$proxy_port"
-export ftp_proxy="http://$proxy_server:$proxy_port"
+export http_proxy="http://$proxy_server:$proxy_port/"
+export https_proxy="http://$proxy_server:$proxy_port/"
+export ftp_proxy="http://$proxy_server:$proxy_port/"
 EOF
 source ~/.zsh/proxy
 unset proxy_server proxy_port
