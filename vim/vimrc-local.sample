@@ -4,6 +4,8 @@
 set background=dark
 " disable verifyenc
 let g:plugin_verifyenc_disable=1
+" access the system clipboard
+set clipboard=unnamed
 
 " Vundle
 filetype off
