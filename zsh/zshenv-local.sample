@@ -1,7 +1,7 @@
 # -*- shell-script -*-
 # zshenv specific to machine local
 # path setting
-for prefix in '/usr/osxws' '/usr/local'; do
+for prefix in '/usr/osxws' '/usr/local' '/opt/local'; do
     if [ -d "$prefix" ]; then
         for pth in "$prefix/bin" "$prefix/sbin"; do
             if ! echo "$PATH" | grep -q "$pth"; then
@@ -13,24 +13,41 @@ for prefix in '/usr/osxws' '/usr/local'; do
                 MANPATH="$pth:$MANPATH"
             fi
         done
-        if ! echo "$FPATH" | grep -q "$prefix/share/zsh/site-functions"; then
-            FPATH="$pth:$FPATH"
+        if ! echo "$fpath" | grep -q "$prefix/share/zsh/site-functions"; then
+            fpath=("$pth/share/zsh/site-functions" $fpath)
         fi
     fi
 done
-for pth in "$HOME/Library/bin" "$HOME/bin"; do
-    if ! echo "$PATH" | grep -q "$pth"; then
-        PATH="$pth:$PATH"
+for pth in "$HOME/Library" "$HOME"; do
+    if ! echo "$PATH" | grep -q "$pth/bin"; then
+        PATH="$pth/bin:$PATH"
+    fi
+    if ! echo "$MANPATH" | grep -q "$pth/man"; then
+        MANPATH="$pth/man:$MANPATH"
     fi
 done
 unset prefix pth
 export PATH MANPATH
-export FPATH="$HOME/.zsh/site-functions:$FPATH"
+
+if ! echo "$PATH" | grep -q /usr/texbin; then
+    export PATH=/usr/texbin:$PATH
+fi
 
 # personal texmf
 export TEXMFHOME="$HOME/Library/texmf"
 export TEXMFVAR="$TEXMFHOME"
 export TEXMFCONFIG="$TEXMFHOME"
+
+# python setting with virtualenv
+if [ -d "$HOME/Library/Python/venv" ]; then
+    export VIRTUALENV_DISTRIBUTE=true
+    if [ -s "$HOME/Library/Python/venv/bin/activate" ]; then
+        source "$HOME/Library/Python/venv/bin/activate"
+    fi
+    if [ -s "$HOME/Library/Python/venv/bin/virtualenvwrapper.sh" ]; then
+        source "$HOME/Library/Python/venv/bin/virtualenvwrapper.sh"
+    fi
+fi
 
 # perl setting with cpanm on user directory
 if [ -d "$HOME/Library/Perl" ]; then
@@ -38,7 +55,7 @@ if [ -d "$HOME/Library/Perl" ]; then
         PATH="$HOME/Library/Perl/bin:$PATH"
     fi
     if [ -z "$(echo $MANPATH | grep \"$HOME/Library/Perl/man\")" ]; then
-        MANPATH="$HOME/Library/Perl/bin:$MANPATH"
+        MANPATH="$HOME/Library/Perl/man:$MANPATH"
     fi
     export PERL5LIB="$HOME/Library/lib/perl5:$PERL5LIB"
     export PERL_CPANM_OPT="--local-lib=$HOME/Library/Perl"
@@ -46,8 +63,8 @@ if [ -d "$HOME/Library/Perl" ]; then
 fi
 
 # ruby setting with rbenv
-if [ -d "$HOME/Library/rbenv"  ] ; then
-    export RBENV_ROOT="$HOME/Library/rbenv"
+if [ -d "$HOME/Library/Ruby/rbenv"  ] ; then
+    export RBENV_ROOT="$HOME/Library/Ruby/rbenv"
     if [ -z "$(echo $PATH | grep \"$RBENV_ROOT/bin\")" ]; then
         export PATH="$RBENV_ROOT/bin:$PATH"
     fi
@@ -65,6 +82,7 @@ fi
 intel_arch=$(test -z "$(uname -a | grep "x86_64")" && echo "ia32" || echo "intel64")
 for script in iccvars.sh ifortvars.sh; do
     if [ -x /opt/intel/bin/$script ]; then
-    . /opt/intel/bin/$script $intel_arch
-fi
+        . /opt/intel/bin/$script $intel_arch
+    fi
+done
 unset intel_arch

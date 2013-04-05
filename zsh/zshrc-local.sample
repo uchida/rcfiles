@@ -24,6 +24,10 @@ if [ -x "$(which rlwrap)" ]; then
         fi
     done
 fi
+alias mew='emacs -nw -e mew'
+if [ -x "$(which ipython)" ]; then
+    alias pylab='ipython --pylab'
+fi
 # proxy
 function reset_proxy () {
 unset http_proxy https_proxy ftp_proxy
@@ -84,17 +88,6 @@ if [ -x "$(which gisty)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
     export GISTY_ACCESS_TOKEN=""
 fi
-# perlbrew
-export PERLBREW_ROOT="$HOME/.perlbrew"
-export PERLBREW_HOME="$HOME/.perlbrew"
-export PERL_CPANM_HOME="$HOME/.perlbrew/cpanm"
-if [ -s "$HOME/.perlbrew/etc/bashrc" ]; then
-    source "$HOME/.perlbrew/etc/bashrc"
-fi
-# rvm
-if [ -s "$HOME/.rvm/scripts/rvm" ]; then
-    source "$HOME/.rvm/scripts/rvm"
-fi
 # OS dependent command aliases
 if [ -f "$HOME/Library/bin/fcd.sh" ]; then
     alias fcd="source $HOME/Library/bin/fcd.sh"
@@ -126,9 +119,9 @@ if [ -d /usr/osxws ]; then
     if [ -f /usr/osxws/etc/man.conf ]; then
         alias man='man -C /usr/osxws/etc/man.conf'
     fi
-    if [ -n "$(ps uxc|grep Emacs)" ]; then
+    if [ -n "$(ps uxc|grep emacs)" ]; then
         alias emacs='emacsclient -nw'
-        alias mew='openemacs -nw -e mew'
+        alias mew='emacs -nw -e mew'
     else
         alias emacs='openemacs'
         alias mew='openemacs -nw -e mew'
