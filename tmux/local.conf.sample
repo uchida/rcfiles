@@ -1,0 +1,8 @@
+# -*- conf-unix -*-
+# ~/.tmux/local.conf
+# set TERM environment
+#set-option -g default-terminal xterm-256color
+# always start from home directory
+#set-option -g default-path "$HOME"
+# for Mac OS X
+#set-option -g default-command "reattach-to-user-namespace -l zsh"

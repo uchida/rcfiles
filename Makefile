@@ -27,6 +27,8 @@ install_vim:
 install_tmux:
 	rm -f ~/.tmux.conf;
 	ln -s `pwd`/tmux/tmux.conf ~/.tmux.conf
+	mkdir -p ~/.tmux
+	test -f ~/.tmux/local.conf || cp `pwd`/tmux/local.conf.sample ~/.tmux/local.conf
 
 install_screen:
 	rm -f ~/.screenrc;
