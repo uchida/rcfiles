@@ -65,7 +65,7 @@ if has("autocmd")
                 \ endif
 endif
 " encoding and fileformat
-set fileencodings=iso-2022-jp,utf-8,cp932,euc-jp,default,latin
+set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
 set fileformats=unix,dos,mac
 " treat ambigous width characters, for example  □,  ○, as double width
 if exists('&ambiwidth')
