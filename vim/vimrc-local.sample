@@ -11,53 +11,55 @@ set clipboard=unnamed
 filetype off
 set rtp+=~/.vim/vundle/
 call vundle#rc()
-Bundle 'spec.vim'
-Bundle 'sudo.vim'
-Bundle 'autodate.vim'
-"Bundle 'davidhalter/jedi-vim'
-"Bundle 'pythoncomplete'
+"Bundle 'sudo.vim'
+"Bundle 'spec.vim'
+"Bundle 'autodate.vim'
 "Bundle 'skk.vim'
 "Bundle 'tyru/eskk.vim'
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/neosnippets'
-Bundle 'Rip-Rip/clang_complete'
-Bundle 'osyo-manga/neocomplcache-clang_complete'
+"Bundle 'Rip-Rip/clang_complete'
+"Bundle 'davidhalter/jedi-vim'
+"Bundle 'Shougo/neocomplcache'
+"Bundle 'Shougo/neosnippet'
+"Bundle 'pangloss/vim-javascript'
+"Bundle "lepture/vim-jinja"
+"Bundle 'nanotech/jellybeans.vim'
 filetype plugin indent on
 
-" skk.vim : Japanese SKK 
+" skk.vim: an implementation of the Japanese SKK
 " http://www.vim.org/scripts/script.php?script_id=1589
 let skk_jisyo='~/.emacs.d/skk/jisyo'
-"let skk_large_jisyo='/usr/osxws/share/skk/SKK-JISYO.L'
+let skk_large_jisyo='~/.emacs.d/skk/SKK-JISYO.L'
 let skk_auto_save_jisyo=1
 let skk_keep_state=0
 let skk_egg_like_newline=1
 let skk_show_annotation=1
 let skk_use_face=1
 
-" eskk.vim: aims to provide powerful input method platform in Vim
-" https://github.com/tyru/eskk.vim
-let g:eskk#dictionary={'path': "~/.emacs.d/skk/jisyo", 'sorted': 0, 'encoding': 'euc-jp'}
-"let g:eskk#large_dictionary='/usr/osxws/share/skk/SKK-JISYO.L'
-let g:eskk#directory='~/.vim/eskk'
-let g:eskk#show_annotation=1
-let g:eskk#egg_like_newline=1
-let g:eskk#egg_like_newline_completion=1
-let g:eskk#enable_completion=0
-let g:eskk#keep_state=0
+"" eskk.vim: aims to provide powerful input method platform in Vim
+"" https://github.com/tyru/eskk.vim
+"let g:eskk#dictionary={'path': "~/.emacs.d/skk/jisyo", 'sorted': 0, 'encoding': 'euc-jp'}
+"let g:eskk#large_dictionary='~/.emacs.d/skk/SKK-JISYO.L'
+"let g:eskk#directory='~/.vim/eskk'
+"let g:eskk#show_annotation=1
+"let g:eskk#egg_like_newline=1
+"let g:eskk#egg_like_newline_completion=1
+""let g:eskk#enable_completion=1
+"let g:eskk#keep_state=1
+"setlocal omnifunc=syntaxcomplete#Complete
 
-" spec.vim: spec file plugin 
+" spec.vim: spec file plugin
 " http://www.vim.org/scripts/script.php?script_id=98
-language time C 
-"let spec_chglog_format='%a %b %e %Y Your Name <user@example.com>'
-autocmd BufNewFile,BufRead *.spec setf spec
+"language time C
+"let spec_chglog_format='%a %b %e %Y Akihiro Uchida <>'
+"autocmd BufNewFile,BufRead *.spec setf spec
 
 " autodate.vim: A customizable plugin to update time stamps automatically
 " http://www.vim.org/scripts/script.php?script_id=291
-let g:autodate_disable=0
-let g:autodate_lines=20
-let g:autodate_keyword_pre='Last modified: '
-let g:autodate_keyword_post='$'
-let g:autodate_format='%a %e %b %T %Z %Y'
+"let g:autodate_disable=0
+"let g:autodate_lines=20
+"let g:autodate_keyword_pre='Last modified: '
+"let g:autodate_keyword_post='$'
+"let g:autodate_format='%a %e %b %T %Z %Y'
 
 " clang_complete: Vim plugin that use clang for completing C/C++ code
 " https://github.com/Rip-Rip/clang_complete
@@ -81,7 +83,7 @@ inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 if !exists('g:neocomplcache_include_paths')
     let g:neocomplcache_include_paths={}
 endif
-"let g:neocomplcache_include_paths.cpp=".,/usr/include/c++/4.2.1,/usr/osxws/include"
+"let g:neocomplcache_include_paths.cpp=".,/usr/include"
 
 " neosnippet: adds snippet support to Vim
 " https://github.com/Shougo/neosnippet
@@ -94,21 +96,24 @@ vmap <expr><TAB> neosnippet#expandable() ?
 
 " neocomplcache & clang_complete
 let g:neocomplcache_force_overwrite_completefunc=1
+if !exists("g:neocomplcache_force_omni_patterns")
+        let g:neocomplcache_force_omni_patterns = {}
+endif
+" set regex pattern for omnifunc
+let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|::'
+let g:clang_complete_auto=0
 " overwrite <CR> map in ClangCompleteInit()
 autocmd FileType c,cpp,objc,objcpp call OverwriteClangCompKeys()
 function! OverwriteClangCompKeys()
-    autocmd InsertEnter * 
-            \ inoremap <expr><buffer><CR>
-            \   neocomplcache#smart_close_popup() . "\<CR>"
-    autocmd InsertEnter *
-            \ imap <expr><buffer><CR> 
-            \   neocomplcache#sources#snippets_complete#expandable() ?
-            \           "\<Plug>(neocomplcache_snippets_expand)" : "\<CR>"
+    "autocmd InsertEnter * inoremap <expr><buffer><CR>
+    "        \   neocomplcache#smart_close_popup() . "\<CR>"
+    autocmd InsertEnter * imap <expr><buffer><CR>
+            \   neosnippet#expandable() ?
+            \   "\<Plug>(neosnippet_jump_or_expand)" : "\<CR>"
 endfunction
-
-" pythoncomplete: Python Omni Completion
-" http://www.vim.org/scripts/script.php?script_id=1542
-"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+if !exists('g:neocomplcache_same_filetype_lists')
+    let g:neocomplcache_same_filetype_lists = {}
+endif
 
 " jedi-vim: awesome Python autocompletion with VIM
 " https://github.com/davidhalter/jedi-vim
@@ -118,9 +123,12 @@ let g:neocomplcache_enable_auto_select=0
 let g:jedi#auto_initialization=1
 let g:jedi#popup_on_dot=0
 let g:jedi#show_function_definition=0
-"autocmd  FileType python let b:did_ftplugin=1
+autocmd  FileType python let b:did_ftplugin=1
 if !exists('g:neocomplcache_force_omni_patterns')
       let g:neocomplcache_force_omni_patterns={}
 endif
 let g:neocomplcache_force_omni_patterns.python='[^. \t]\.\w*'
 
+" jellybeans: A colorful, dark color scheme
+" https://github.com/nanotech/jellybeans.vim
+"colorscheme jellybeans
