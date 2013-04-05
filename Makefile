@@ -8,6 +8,7 @@ install_zsh:
 	mkdir -p ~/.zsh;
 	test -f ~/.zsh/zshenv-local || cp `pwd`/zsh/zshenv-local.sample ~/.zsh/zshenv-local
 	test -f ~/.zsh/zshrc-local || cp `pwd`/zsh/zshrc-local.sample ~/.zsh/zshrc-local
+	ln -s `pwd`/zsh/addons ~/.zsh
 
 install_vim:
 	git submodule update --init
