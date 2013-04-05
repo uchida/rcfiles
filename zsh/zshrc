@@ -67,7 +67,6 @@ fi
 # pager
 export PAGER=less
 export MANPAGER=less
-export LESS='-R'
 
 # the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
 PROMPT="%m:%(3~,.../%2~,%~) $USER> "

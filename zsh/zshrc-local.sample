@@ -68,10 +68,15 @@ export GNUTERM='x11'
 export GREP_OPTIONS='--binary-files=without-match --color=auto'
 # for less
 export LESSCHARSET=utf-8
-if [ -x "$(which nkf)" ]; then
-    export LESSOPEN='| nkf -w %s'
-fi
+export LESS='-R'
 export LESSHISTFILE="$HOME/.zsh/cache/lesshst"
+if [ -x "$(which lesspipe_utf8.sh)" ]; then
+    export LESSOPEN='|lesspipe_utf8.sh %s'
+    export LESSCOLOR=1
+fi
+if [ -x "$(which pygmentize-console)" ]; then
+    export LESSCOLORIZER=pygmentize-console
+fi
 # gisty
 if [ -x "$(which gisty)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
