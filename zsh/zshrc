@@ -69,11 +69,27 @@ export PAGER=less
 export MANPAGER=less
 
 # the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
-PROMPT="%m:%(3~,.../%2~,%~) $USER> "
+PROMPT_HOST="%m"
+PROMPT_DIR="%(3~,.../%2~,%~)"
 # the prompt shows host with red color in the ssh connection
 if [ -n "$SSH_CLIENT" ]; then
-    PROMPT="%{$fg[red]%}%m%{$reset_color%}:%(3~,.../%2~,%~) $USER> "
+    PROMPT_HOST="%{$fg[red]%}$PROMPT_HOST%{$reset_color%}"
 fi
+# show vcs info in RPROMPT
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn hg
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:stagedstr:*:' S
+zstyle ':vcs_info:git:unstagedstr:*' U
+zstyle ':vcs_info:git:*' formats "%F{1}%c%u%F{7}[%F{2}%b%F{7}]"
+zstyle ':vcs_info:git:*' actionformats "%F{1}%c%u%F{7}[%F{1}%a%F{2}%b%F{7}]"
+update_vcs_info () {
+    vcs_info
+}
+RPROMPT='${vcs_info_msg_0_}'
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd update_vcs_info
+PROMPT="$PROMPT_HOST:$PROMPT_DIR $USER> "
 
 # aliases
 alias rm='rm -i'
