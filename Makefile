@@ -11,6 +11,7 @@ install_zsh:
 	git submodule update --init
 	rm -rf $(HOME)/.zsh/addons
 	ln -s `pwd`/zsh/addons $(HOME)/.zsh
+	touch $(HOME)/.zsh/cache/z
 
 install_vim:
 	git submodule update --init
