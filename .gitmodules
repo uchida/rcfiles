@@ -3,7 +3,7 @@
 	url = https://github.com/gmarik/vundle.git
 [submodule "vim/tiny-templates"]
 	path = vim/tiny-templates
-	url = https://uchida@github.com/uchida/tiny-templates.git
+	url = https://github.com/uchida/tiny-templates.git
 [submodule "zsh/addons/z"]
 	path = zsh/addons/z
 	url = https://github.com/rupa/z.git
