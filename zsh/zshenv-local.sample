@@ -68,7 +68,7 @@ if [ -d "$HOME/Library/Ruby/rbenv"  ] ; then
     if [ -z "$(echo $PATH | grep \"$RBENV_ROOT/bin\")" ]; then
         export PATH="$RBENV_ROOT/bin:$PATH"
     fi
-    if [ -x $(which rbenv) ]; then
+    if [ -x $(which rbenv 2> /dev/null) ]; then
         eval "$(rbenv init -)"
     fi
 fi

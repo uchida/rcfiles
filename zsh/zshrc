@@ -4,13 +4,13 @@
 # about autoload module, see man zshcontrib
 
 # exec tmux or screen
-if [ -x "$(which tmux)" ]; then
+if [ -x "$(which tmux 2> /dev/null)" ]; then
     if [ -z "$(ps uxc | grep tmux)" ]; then
         exec tmux -2
     elif [ -n "$SSH_CLIENT" ]; then
         exec tmux -2 attach
     fi
-elif [ -x "$(which screen)" ]; then
+elif [ -x "$(which screen 2> /dev/null)" ]; then
     if [ -z "$(ps uxc | grep screen)" ]; then
         exec screen -D -RR
     fi
@@ -60,7 +60,7 @@ bindkey '^N' history-beginning-search-forward
 # editor
 export EDITOR=vi
 # use vim if executable
-if [ -x "$(which vim)" ]; then
+if [ -x "$(which vim 2> /dev/null)" ]; then
     alias vi=vim
     export EDITOR=vim
 fi

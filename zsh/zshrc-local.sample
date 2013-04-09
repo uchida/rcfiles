@@ -8,24 +8,24 @@ precmd() {
       _z --add "$(pwd -P)"
   }
 alias histop='cat "$HISTFILE"|nkf -w|cut -d" " -f1|sort|uniq -c|sort -nr'
-if [ -x "$(which a2ps)" ]; then
+if [ -x "$(which a2ps 2> /dev/null)" ]; then
     alias a2ps='a2ps --prologue=color'
 fi
-if [ -x "$(which aspell)" ]; then
+if [ -x "$(which aspell 2> /dev/null)" ]; then
     alias aspell='aspell --per-conf=$HOME/.aspell/aspell.conf'
 fi
 # rlwrap
-if [ -x "$(which rlwrap)" ]; then
+if [ -x "$(which rlwrap 2> /dev/null)" ]; then
     export RLWRAP_HOME="$HOME/.zsh/cache"
     alias rlwrap='rlwrap -pred'
     for cmd in sftp telnet ocaml; do
-        if [ -x "$(which $cmd)" ]; then
+        if [ -x "$(which $cmd 2> /dev/null)" ]; then
             alias $cmd="rlwrap $cmd"
         fi
     done
 fi
 alias mew='emacs -nw -e mew'
-if [ -x "$(which ipython)" ]; then
+if [ -x "$(which ipython 2> /dev/null)" ]; then
     alias pylab='ipython --pylab'
 fi
 # proxy
@@ -39,7 +39,7 @@ function set_proxy () {
 proxy_server=proxy.ritsumei.ac.jp
 proxy_port=3128
 # newsbeuter
-if [ -x "$(which newsbeuter)" ]; then
+if [ -x "$(which newsbeuter 2> /dev/null)" ]; then
     echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
     echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
     alias newsbeuter='command newsbeuter -c ~/.newsbeuter/config-proxy'
@@ -76,15 +76,15 @@ export GREP_OPTIONS='--binary-files=without-match --color=auto'
 export LESSCHARSET=utf-8
 export LESS='-R'
 export LESSHISTFILE="$HOME/.zsh/cache/lesshst"
-if [ -x "$(which lesspipe_utf8.sh)" ]; then
+if [ -x "$(which lesspipe_utf8.sh 2> /dev/null)" ]; then
     export LESSOPEN='|lesspipe_utf8.sh %s'
     export LESSCOLOR=1
 fi
-if [ -x "$(which pygmentize-console)" ]; then
+if [ -x "$(which pygmentize-console 2> /dev/null)" ]; then
     export LESSCOLORIZER=pygmentize-console
 fi
 # gisty
-if [ -x "$(which gisty)" ]; then
+if [ -x "$(which gisty 2> /dev/null)" ]; then
     export GISTY_DIR="$HOME/Documents/gists"
     export GISTY_ACCESS_TOKEN=""
 fi
