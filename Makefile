@@ -7,11 +7,11 @@ install_zsh:
 	ln -s $(PWD)/zsh/zshenv $(HOME)/.zshenv
 	rm -f $(HOME)/.zshrc;
 	ln -s $(PWD)/zsh/zshrc $(HOME)/.zshrc
-	mkdir -p $(HOME)/.zsh;
+	mkdir -p $(HOME)/.zsh/cache
 	test -f $(HOME)/.zsh/zshenv-local || cp $(PWD)/zsh/zshenv-local.sample $(HOME)/.zsh/zshenv-local
 	test -f $(HOME)/.zsh/zshrc-local || cp $(PWD)/zsh/zshrc-local.sample $(HOME)/.zsh/zshrc-local
 	git submodule update --init
-	rm -rf $(HOME)/.zsh/addons
+	rm -rf $(HOME)/.zsh/addons;
 	ln -s $(PWD)/zsh/addons $(HOME)/.zsh
 	touch $(HOME)/.zsh/cache/z
 
