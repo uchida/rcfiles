@@ -4,15 +4,17 @@
 # about autoload module, see man zshcontrib
 
 # exec tmux or screen
-if [ -x "$(which tmux 2> /dev/null)" ]; then
-    if [ -z "$(ps uxc | grep tmux)" ]; then
-        exec tmux -2
-    elif [ -n "$SSH_CLIENT" ]; then
-        tmux server-info >/dev/null && exec tmux -2 attach
-    fi
-elif [ -x "$(which screen 2> /dev/null)" ]; then
-    if [ -z "$(ps uxc | grep screen)" ]; then
-        exec screen -D -RR
+if [ -z "$TMUX$SCREEN" ]; then
+    if [ -x "$(which tmux 2> /dev/null)" ]; then
+        if [ -z "$(ps uxc | grep tmux)" ]; then
+            exec tmux -2
+        elif [ -n "$SSH_CLIENT" ]; then
+            exec tmux -2 attach
+        fi
+    elif [ -x "$(which screen 2> /dev/null)" ]; then
+        if [ -z "$(ps uxc | grep screen)" ]; then
+            exec screen -D -RR
+        fi
     fi
 fi
 
