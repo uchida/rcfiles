@@ -79,12 +79,23 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 # show vcs info in RPROMPT
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git svn hg
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:git:stagedstr:*:' S
-zstyle ':vcs_info:git:unstagedstr:*' U
-zstyle ':vcs_info:git:*' formats "%F{1}%c%u%F{7}[%F{2}%b%F{7}]"
-zstyle ':vcs_info:git:*' actionformats "%F{1}%c%u%F{7}[%F{1}%a%F{2}%b%F{7}]"
+zstyle ':vcs_info:*' enable svn git hg
+zstyle ':vcs_info:*' formats "[%b]"
+zstyle ':vcs_info:*' actionformats "[(%F{1}%a%F{7})%b]"
+zstyle ':vcs_info:*' stagedstr "S"
+zstyle ':vcs_info:*' unstagedstr "U"
+zstyle ':vcs_info:svn:*' branchformat "%F{2}%b%F{7}:%r"
+zstyle ':vcs_info:git*:*' check-for-changes true
+zstyle ':vcs_info:git*:*' branchformat "%F{2}%b%F{7}"
+zstyle ':vcs_info:git*:*' formats "%F{1}%c%u%F{7}[%b]"
+zstyle ':vcs_info:git*:*' actionformats "%F{1}%c%u%F{7}[(%F{1}%a%F{7})%b]"
+zstyle ':vcs_info:hg:*' check-for-changes true
+zstyle ':vcs_info:hg:*' get-revision true
+zstyle ':vcs_info:hg:*' get-bookmarks true
+zstyle ':vcs_info:hg:*' formats '%F{1}%u%F{7}[%b:%F{2}%m%F{7}]'
+zstyle ':vcs_info:hg:*' actionformats "%F{1}%u%F{7}[(%F{1}%a%F{7})%b:%F{2}%m%F{7}]"
+zstyle ':vcs_info:hg:*' branchformat "%F{2}%b%F{7}:%r"
+zstyle ':vcs_info:hg:*' hgrevformat "%r"
 update_vcs_info () {
     vcs_info
 }
