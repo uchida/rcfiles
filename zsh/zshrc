@@ -96,6 +96,9 @@ if [ -x "$(which _z)" ]; then
     add-zsh-hook precmd zaddpwd
 fi
 
+# add additional completion definition
+fpath=("$HOME/.shell/zsh-completions/src" $fpath)
+
 # load machine specific settings
 if [ -f "$HOME/.shell/zshrc-local" ]; then
     source "$HOME/.shell/zshrc-local"

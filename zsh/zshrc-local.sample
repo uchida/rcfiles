@@ -1,9 +1,6 @@
 # -*- shell-script -*-
 # ~/.shell/zshrc-local: the local machine specific zsh run commands
 
-# add additional completion definition
-fpath=("$HOME/.shell/zsh-completions/src" $fpath)
-
 # complete filename via command-suffix correspondance
 compctl -/g '*.(eps|ps|pdf)' gv
 compctl -/g '*.dvi' xdvi
