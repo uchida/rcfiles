@@ -1,0 +1,30 @@
+# -*- shell-script -*-
+# ~/.bashrc: the bash interactive shell startup file
+
+# load shell run commands
+if [ -s "$HOME/.shell/rc" ]; then
+    source "$HOME/.shell/rc"
+fi
+
+# histroy file setting
+HISTFILE="$HOME/.shell/cache/bash_history"
+HISTSIZE=100000
+
+# the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
+PROMPT_HOST="$(hostname -s)"
+PROMPT_DIR='pwd | sed -e "s|$HOME|~|g" | sed -e "s|.*/\([^/]*\)/\([^/]*\)$|.../\1/\2|g"'
+# the prompt shows host with red color in the ssh connection
+if [ -n "$SSH_CLIENT" ]; then
+    PROMPT_HOST="\[\033[31m\]$PROMPT_HOST\[\033[0m\]"
+fi
+UPDATE_PS1='export PS1=$(echo "$PROMPT_HOST:$(eval $PROMPT_DIR) $USER> ")'
+if ! echo "$PROMPT_COMMAND" | grep -q "\$PS1"; then
+    export PROMPT_COMMAND="$UPDATE_PS1;$PROMPT_COMMAND"
+fi
+
+# load bash_completion
+for prefix in '/' '/usr/local'; do
+    if [ -s "$prefix/etc/bash_completion" ]; then
+        source "$prefix/etc/bash_completion"
+    fi
+done

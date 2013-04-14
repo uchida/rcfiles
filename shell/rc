@@ -1,0 +1,59 @@
+# -*- shell-script -*-
+# ~/.shell/rc: the shell run command for startup
+
+# environment variables
+export EDITOR=vi
+# use vim if available
+if [ -x "$(which vim 2> /dev/null)" ]; then
+    alias vi=vim
+    export EDITOR=vim
+fi
+# pager
+export PAGER=less
+export MANPAGER=less
+export CVS_RSH='ssh'
+export RSYNC_RSH='ssh'
+export GNUTERM='x11'
+export GREP_OPTIONS='--binary-files=without-match --color=auto'
+# for less
+export LESSCHARSET=utf-8
+export LESS='-R'
+export LESSHISTFILE="$HOME/.shell/cache/lesshst"
+
+# make the cache directory for shell
+test ! -d "$HOME/.shell/cache" && mkdir -p "$HOME/.shell/cache"
+
+# alias
+alias rm='rm -i'
+alias cp='cp -i'
+alias eng='export LANG=C LANGUAGE=C LC_ALL=C'
+alias gd='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"'
+alias bell='echo "\a"'
+# OS dependent aliases
+case "$OSTYPE" in
+    linux* | msys | cygwin)
+        alias ls='ls -F --color=auto'
+        alias ll='ls -la'
+        alias la='ls -a'
+        ;;
+    freebsd* | darwin*)
+        alias ls='ls -G'
+        alias ll='ls -lha'
+        alias la='ls -a'
+        alias top='top -o cpu'
+        ;;
+esac
+
+# z.sh
+if [ -s "$HOME/.shell/scripts/z/z.sh" ]; then
+    export _Z_DATA="$HOME/.shell/cache/z"
+    case $- in *i*)
+            source "$HOME/.shell/scripts/z/z.sh"
+            ;;
+    esac
+fi
+
+# load machine specific settings
+if [ -s "$HOME/.shell/rc-local" ]; then
+    source "$HOME/.shell/rc-local"
+fi

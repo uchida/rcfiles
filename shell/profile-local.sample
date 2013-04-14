@@ -1,29 +1,25 @@
 # -*- shell-script -*-
-# zshenv specific to machine local
+# ~/.shell/profile-local: the local machine specific shell initialization file
+
 # path setting
-for prefix in '/usr/osxws' '/usr/local' '/opt/local'; do
-    if [ -d "$prefix" ]; then
-        for pth in "$prefix/bin" "$prefix/sbin"; do
-            if ! echo "$PATH" | grep -q "$pth"; then
-                PATH="$pth:$PATH"
-            fi
-        done
-        for pth in "$prefix/share/man" "$prefix/man"; do
-            if ! echo "$MANPATH" | grep -q "$pth"; then
-                MANPATH="$pth:$MANPATH"
-            fi
-        done
-        if ! echo "$fpath" | grep -q "$prefix/share/zsh/site-functions"; then
-            fpath=("$pth/share/zsh/site-functions" $fpath)
+for prefix in '/opt/local' '/usr/osxws'; do
+    for pth in "$prefix/bin" "$prefix/sbin"; do
+        if ! echo "$PATH" | grep -q "$pth"; then
+            test -d "$pth" && PATH="$pth:$PATH"
         fi
-    fi
+    done
+    for pth in "$prefix/share/man" "$prefix/man"; do
+        if ! echo "$MANPATH" | grep -q "$pth"; then
+            test -d "$pth" && MANPATH="$pth:$MANPATH"
+        fi
+    done
 done
-for pth in "$HOME/Library" "$HOME"; do
+for pth in "$HOME/local" "$HOME"; do
     if ! echo "$PATH" | grep -q "$pth/bin"; then
-        PATH="$pth/bin:$PATH"
+        test -d "$pth" && PATH="$pth:$PATH"
     fi
     if ! echo "$MANPATH" | grep -q "$pth/man"; then
-        MANPATH="$pth/man:$MANPATH"
+        test -d "$pth" && MANPATH="$pth:$MANPATH"
     fi
 done
 unset prefix pth
@@ -72,17 +68,3 @@ if [ -d "$HOME/Library/Ruby/rbenv"  ] ; then
         eval "$(rbenv init -)"
     fi
 fi
-
-# source proxy setting when available
-if [ -s "$HOME/.zsh/proxy" ]; then
-    source $HOME/.zsh/proxy
-fi
-
-# Intel Compiler and Intel Math Kernel Library
-intel_arch=$(test -z "$(uname -a | grep "x86_64")" && echo "ia32" || echo "intel64")
-for script in iccvars.sh ifortvars.sh; do
-    if [ -x /opt/intel/bin/$script ]; then
-        . /opt/intel/bin/$script $intel_arch
-    fi
-done
-unset intel_arch

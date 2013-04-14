@@ -2,18 +2,38 @@ install: install_zsh install_vim install_tmux
 
 PWD=$(shell pwd)
 
-install_zsh:
+install_shcommon:
+	mkdir -p $(HOME)/.shell
+	rm -f $(HOME)/.shell/profile
+	ln -s $(PWD)/shell/profile $(HOME)/.shell/
+	mkdir -p $(HOME)/.shell
+	rm -f $(HOME)/.shell/rc
+	ln -s $(PWD)/shell/rc $(HOME)/.shell/
+	test -f $(HOME)/.shell/profile-local || cp $(PWD)/shell/profile-local.sample $(HOME)/.shell/profile-local
+	test -f $(HOME)/.shell/rc-local || cp $(PWD)/shell/rc-local.sample $(HOME)/.shell/rc-local
+	rm -f $(HOME)/.inputrc;
+	ln -s $(PWD)/bash/inputrc $(HOME)/.inputrc
+	git submodule update --init
+	mkdir -p $(HOME)/.shell/scripts
+	rm -rf $(HOME)/.shell/scripts/z
+	ln -s $(PWD)/shell/z $(HOME)/.shell/scripts/
+	mkdir -p $(HOME)/.shell/cache
+	touch $(HOME)/.shell/cache/z
+
+install_bash: install_shcommon
+	rm -f $(HOME)/.bash_profile;
+	ln -s $(HOME)/.shell/profile $(HOME)/.bash_profile
+	rm -f $(HOME)/.bashrc;
+	ln -s $(PWD)/bash/bashrc $(HOME)/.bashrc
+
+install_zsh: install_shcommon
 	rm -f $(HOME)/.zshenv;
 	ln -s $(PWD)/zsh/zshenv $(HOME)/.zshenv
 	rm -f $(HOME)/.zshrc;
 	ln -s $(PWD)/zsh/zshrc $(HOME)/.zshrc
-	mkdir -p $(HOME)/.zsh/cache
-	test -f $(HOME)/.zsh/zshenv-local || cp $(PWD)/zsh/zshenv-local.sample $(HOME)/.zsh/zshenv-local
-	test -f $(HOME)/.zsh/zshrc-local || cp $(PWD)/zsh/zshrc-local.sample $(HOME)/.zsh/zshrc-local
-	git submodule update --init
-	rm -rf $(HOME)/.zsh/addons;
-	ln -s $(PWD)/zsh/addons $(HOME)/.zsh
-	touch $(HOME)/.zsh/cache/z
+	test -f $(HOME)/.shell/zshrc-local || cp $(PWD)/zsh/zshrc-local.sample $(HOME)/.shell/zshrc-local
+	rm -rf $(HOME)/.shell/zsh-completions
+	ln -s $(PWD)/zsh/zsh-completions $(HOME)/.shell/
 
 install_vim:
 	git submodule update --init
@@ -47,6 +67,8 @@ install_newsbeuter:
 	test -f $(HOME)/.newsbeuter/config-local || cp $(PWD)/newsbeuter/config-local.sample $(HOME)/.newsbeuter/config-local
 
 .PHONY: install
+.PHONY: install_shcommon
+.PHONY: install_bash
 .PHONY: install_zsh
 .PHONY: install_vim
 .PHONY: install_tmux install_screen

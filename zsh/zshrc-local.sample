@@ -1,65 +1,9 @@
 # -*- shell-script -*-
-# zshrc specific to machine local
+# ~/.shell/zshrc-local: the local machine specific zsh run commands
 
-# command aliases
-export _Z_DATA="$HOME/.zsh/cache/z"
-source ~/.zsh/addons/z/z.sh
-precmd() {
-      _z --add "$(pwd -P)"
-  }
-alias histop='cat "$HISTFILE"|nkf -w|cut -d" " -f1|sort|uniq -c|sort -nr'
-if [ -x "$(which a2ps 2> /dev/null)" ]; then
-    alias a2ps='a2ps --prologue=color'
-fi
-if [ -x "$(which aspell 2> /dev/null)" ]; then
-    alias aspell='aspell --per-conf=$HOME/.aspell/aspell.conf'
-fi
-# rlwrap
-if [ -x "$(which rlwrap 2> /dev/null)" ]; then
-    export RLWRAP_HOME="$HOME/.zsh/cache"
-    alias rlwrap='rlwrap -pred'
-    for cmd in sftp telnet ocaml; do
-        if [ -x "$(which $cmd 2> /dev/null)" ]; then
-            alias $cmd="rlwrap $cmd"
-        fi
-    done
-fi
-alias mew='emacs -nw -e mew'
-if [ -x "$(which ipython 2> /dev/null)" ]; then
-    alias pylab='ipython --pylab'
-fi
-# proxy
-function reset_proxy () {
-unset http_proxy https_proxy ftp_proxy
-alias newsbeuter='command newsbeuter'
-echo "" > ~/.subversion/servers
-echo "" > ~/.zsh/proxy
-}
-function set_proxy () {
-proxy_server=proxy.ritsumei.ac.jp
-proxy_port=3128
-# newsbeuter
-if [ -x "$(which newsbeuter 2> /dev/null)" ]; then
-    echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
-    echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
-    alias newsbeuter='command newsbeuter -c ~/.newsbeuter/config-proxy'
-fi
-# subversion
-if [ -d "$HOME/.subversion" ]; then
-cat << EOF > ~/.subversion/servers
-[global]
-http-proxy-host = $proxy_server
-http-proxy-port = $proxy_port
-EOF
-fi
-cat << EOF > ~/.zsh/proxy
-export http_proxy="http://$proxy_server:$proxy_port/"
-export https_proxy="http://$proxy_server:$proxy_port/"
-export ftp_proxy="http://$proxy_server:$proxy_port/"
-EOF
-source ~/.zsh/proxy
-unset proxy_server proxy_port
-}
+# add additional completion definition
+fpath=("$HOME/.shell/zsh-completions/src" $fpath)
+
 # complete filename via command-suffix correspondance
 compctl -/g '*.(eps|ps|pdf)' gv
 compctl -/g '*.dvi' xdvi
@@ -67,72 +11,14 @@ compctl -/g '*.dat' xgraph
 compctl -/g '*.yap' yaplot
 compctl -/g '*.plt' gnuplot
 compctl -/g '*.src.rpm' rpmbuild
-# environment variables
-export CVS_RSH='ssh'
-export RSYNC_RSH='ssh'
-export GNUTERM='x11'
-export GREP_OPTIONS='--binary-files=without-match --color=auto'
-# for less
-export LESSCHARSET=utf-8
-export LESS='-R'
-export LESSHISTFILE="$HOME/.zsh/cache/lesshst"
-if [ -x "$(which lesspipe_utf8.sh 2> /dev/null)" ]; then
-    export LESSOPEN='|lesspipe_utf8.sh %s'
-    export LESSCOLOR=1
-fi
-if [ -x "$(which pygmentize-console 2> /dev/null)" ]; then
-    export LESSCOLORIZER=pygmentize-console
-fi
-# gisty
-if [ -x "$(which gisty 2> /dev/null)" ]; then
-    export GISTY_DIR="$HOME/Documents/gists"
-    export GISTY_ACCESS_TOKEN=""
-fi
-# OS dependent command aliases
-if [ -f "$HOME/Library/bin/fcd.sh" ]; then
-    alias fcd="source $HOME/Library/bin/fcd.sh"
-fi
-if [ -x /Applications/MacVim.app/Contents/MacOS/Vim ]; then
-    alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
-    export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
-fi
-if [ -x /Applications/GitX.app/Contents/Resources/gitx ]; then
-    alias gitx=/Applications/GitX.app/Contents/Resources/gitx
-fi
-if [ -x /Applications/Conversion.app/Contents/Resources/ffmpeg ]; then
-    alias ffmpeg=/Applications/Conversion.app/Contents/Resources/ffmpeg
-fi
-case "$OSTYPE" in
-    darwin*)
-        # customize for X11
-        function activate() { osascript -e "tell application \"$@\" to activate" }
-        if [ -z "$SSH_CLIENT" ]; then
-            function gv(){ activate X11&&command gv "$@"&&activate iTerm }
-            function xgraph(){ activate X11&&command xgraph "$@"&& activate iTerm }
-            function yaplot(){ activate X11&&command yaplot "$@"&& activate iTerm }
-        fi
-    ;;
-esac
-# settings for Mac OS X WorkShop
-if [ -d /usr/osxws ]; then
-    # man with man.conf of osxws
-    if [ -f /usr/osxws/etc/man.conf ]; then
-        alias man='man -C /usr/osxws/etc/man.conf'
-    fi
-    if [ -n "$(ps uxc|grep emacs)" ]; then
-        alias emacs='emacsclient -nw'
-        alias mew='emacs -nw -e mew'
-    else
-        alias emacs='openemacs'
-        alias mew='openemacs -nw -e mew'
-    fi
-    # use /usr/bin/less
-    alias  less='/usr/bin/less'
-    export PAGER='/usr/bin/less'
-fi
-# show date and users when first ssh connection is established
-if [ -n "$SSH_CLIENT" ]; then
-    if [ -z "$WINDOW" ] || [ "$WINDOW" = 0 ]; then
-        LANG=C LC_ALL=C date +'%Y/%m/%d %a'; w
+
+# Mac OS X specific
+if [ -x /usr/bin/osascript ]; then
+    # customize for X11
+    function activate() { osascript -e "tell application \"$@\" to activate" }
+    if [ -z "$SSH_CLIENT" ]; then
+        function gv(){ activate Xquartz && command gv "$@" && activate Terminal }
+        function xgraph(){ activate Xquartz && command xgraph "$@" && activate Terminal }
+        function yaplot(){ activate Xquartz && command yaplot "$@" && activate Terminal }
     fi
 fi

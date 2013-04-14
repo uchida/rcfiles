@@ -1,16 +1,7 @@
 # -*- shell-script -*-
-# ~/.zshenv
+# ~/.zshenv: the zsh initialization file
 
-# language locale setting
-export LANG=ja_JP.UTF-8
-export LC_ALL=ja_JP.UTF-8
-# default permission rwxr-xr-x
-umask 022
-# path settings
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/X11/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=/usr/local/share/man:/usr/X11R6/man:/usr/share/man
-fpath=("$HOME/.zsh/addons/zsh-completions/src" $fpath)
-# load machine specific settings
-if [ -f "$HOME/.zsh/zshenv-local" ]; then
-    source "$HOME/.zsh/zshenv-local"
+# load the shell run command for startup
+if [ -f "$HOME/.shell/profile" ]; then
+    source "$HOME/.shell/profile"
 fi

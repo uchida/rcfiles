@@ -1,0 +1,59 @@
+# -*- shell-script -*-
+# ~/.shell/profile: the shell initialization file
+
+# language locale setting
+export LANG=ja_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
+# default permission rwxr-xr-x
+umask 022
+# path settings
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/X11/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export MANPATH=/usr/local/share/man:/usr/X11R6/man:/usr/share/man
+
+# proxy setting
+function reset_proxy () {
+    unset http_proxy https_proxy ftp_proxy
+    alias newsbeuter='command newsbeuter'
+    echo "" > ~/.subversion/servers
+    echo "" > ~/.shell/proxy
+}
+function set_proxy () {
+    proxy_server=proxy.ritsumei.ac.jp
+    proxy_port=3128
+    # newsbeuter
+    if [ -x "$(which newsbeuter 2> /dev/null)" ]; then
+        echo 'use-proxy yes'| cat ~/.newsbeuter/config - > ~/.newsbeuter/config-proxy
+        echo "proxy $proxy_server:$porxy_port/" >> ~/.newsbeuter/config-proxy
+        alias newsbeuter='command newsbeuter -c ~/.newsbeuter/config-proxy'
+    fi
+    # subversion
+    if [ -d "$HOME/.subversion" ]; then
+        cat <<- EOF > ~/.subversion/servers
+		[global]
+		http-proxy-host = $proxy_server
+		http-proxy-port = $proxy_port
+		EOF
+    fi
+    cat <<- EOF > ~/.shell/proxy
+	export http_proxy="http://$proxy_server:$proxy_port/"
+	export https_proxy="http://$proxy_server:$proxy_port/"
+	export ftp_proxy="http://$proxy_server:$proxy_port/"
+	EOF
+    source ~/.shell/proxy
+    unset proxy_server proxy_port
+}
+
+# source proxy setting when available
+if [ -s "$HOME/.shell/proxy" ]; then
+    source $HOME/.shell/proxy
+fi
+
+# load machine specific settings
+if [ -s "$HOME/.shell/profile-local" ]; then
+    source "$HOME/.shell/profile-local"
+fi
+
+# run commands for bash
+if [ -s "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc"
+fi

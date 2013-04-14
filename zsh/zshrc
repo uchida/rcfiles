@@ -1,28 +1,15 @@
 # -*- shell-script -*-
-# ~/.zshrc
+# ~/.zshrc: the zsh interactive shell startup file
 # about (un)setopt option, see man zshoptions
 # about autoload module, see man zshcontrib
 
-# exec tmux or screen
-if [ -z "$TMUX$SCREEN" ]; then
-    if [ -x "$(which tmux 2> /dev/null)" ]; then
-        if [ -z "$(ps uxc | grep tmux)" ]; then
-            exec tmux -2
-        elif [ -n "$SSH_CLIENT" ]; then
-            exec tmux -2 attach
-        fi
-    elif [ -x "$(which screen 2> /dev/null)" ]; then
-        if [ -z "$(ps uxc | grep screen)" ]; then
-            exec screen -D -RR
-        fi
-    fi
+# load shell run commands
+if [ -s "$HOME/.shell/rc" ]; then
+    source "$HOME/.shell/rc"
 fi
 
-# a cache directory for completion and history
-test ! -d "$HOME/.zsh/cache" && mkdir -p "$HOME/.zsh/cache"
-
 # use completion
-autoload -U compinit; compinit -u -d "$HOME/.zsh/cache/zcompdump"
+autoload -U compinit; compinit -u -d "$HOME/.shell/cache/zcompdump"
 # use color
 autoload colors; colors
 
@@ -49,26 +36,17 @@ setopt hist_no_store
 setopt hist_reduce_blanks
 # do not append duplicated directories to history
 setopt pushd_ignore_dups
+
 # histroy file setting
-HISTFILE="$HOME/.zsh/cache/history"
+HISTFILE="$HOME/.shell/cache/zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
+
 # use Emacs keybind
 bindkey -e
-# C-p(n) as history search back(forward)
+# C-p/n as history search back/forward
 bindkey '^P' history-beginning-search-backward
 bindkey '^N' history-beginning-search-forward
-
-# editor
-export EDITOR=vi
-# use vim if executable
-if [ -x "$(which vim 2> /dev/null)" ]; then
-    alias vi=vim
-    export EDITOR=vim
-fi
-# pager
-export PAGER=less
-export MANPAGER=less
 
 # the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
 PROMPT_HOST="%m"
@@ -77,6 +55,8 @@ PROMPT_DIR="%(3~,.../%2~,%~)"
 if [ -n "$SSH_CLIENT" ]; then
     PROMPT_HOST="%{$fg[red]%}$PROMPT_HOST%{$reset_color%}"
 fi
+PROMPT="$PROMPT_HOST:$PROMPT_DIR $USER> "
+
 # show vcs info in RPROMPT
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable svn git hg
@@ -86,9 +66,8 @@ zstyle ':vcs_info:*' stagedstr "S"
 zstyle ':vcs_info:*' unstagedstr "U"
 zstyle ':vcs_info:svn:*' branchformat "%F{2}%b%F{7}:%r"
 zstyle ':vcs_info:git*:*' check-for-changes true
-zstyle ':vcs_info:git*:*' branchformat "%F{2}%b%F{7}"
-zstyle ':vcs_info:git*:*' formats "%F{1}%c%u%F{7}[%b]"
-zstyle ':vcs_info:git*:*' actionformats "%F{1}%c%u%F{7}[(%F{1}%a%F{7})%b]"
+zstyle ':vcs_info:git*:*' formats "%F{1}%c%u%F{7}[%F{2}%b%F{7}]"
+zstyle ':vcs_info:git*:*' actionformats "%F{1}%c%u%F{7}[(%F{1}%a%F{7})%F{2}%b%F{7}]"
 zstyle ':vcs_info:hg:*' check-for-changes true
 zstyle ':vcs_info:hg:*' get-revision true
 zstyle ':vcs_info:hg:*' get-bookmarks true
@@ -102,29 +81,16 @@ update_vcs_info () {
 RPROMPT='${vcs_info_msg_0_}'
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd update_vcs_info
-PROMPT="$PROMPT_HOST:$PROMPT_DIR $USER> "
 
-# aliases
-alias rm='rm -i'
-alias cp='cp -i'
-alias eng='export LANG=C LANGUAGE=C LC_ALL=C'
-alias gd='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"'
-alias bell='echo "\a"'
-# OS dependent setting
-case "$OSTYPE" in
-    linux* | msys | cygwin)
-    alias ls='ls -F --color=auto'
-    alias ll='ls -la'
-    alias la='ls -a'
-    ;;
-    freebsd* | darwin*)
-    alias ls='ls -G'
-    alias ll='ls -lha'
-    alias la='ls -a'
-    alias top='top -o cpu'
-    ;;
-esac
+# for z.sh
+if [ -x "$(which _z)" ]; then
+    function zaddpwd() {
+        _z --add "$(pwd -P)"
+    }
+    add-zsh-hook precmd zaddpwd
+fi
+
 # load machine specific settings
-if [ -f "$HOME/.zsh/zshrc-local" ]; then
-    source "$HOME/.zsh/zshrc-local"
+if [ -f "$HOME/.shell/zshrc-local" ]; then
+    source "$HOME/.shell/zshrc-local"
 fi

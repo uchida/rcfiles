@@ -1,0 +1,88 @@
+# -*- shell-script -*-
+# ~/.shell/rc-local: the local machine specific shell run commands
+
+# exec tmux or screen
+if [ -z "$TMUX$SCREEN" ]; then
+    if [ -x "$(which tmux 2> /dev/null)" ]; then
+        if [ -z "$(ps uxc | grep tmux)" ]; then
+            exec tmux -2
+        elif [ -n "$SSH_CLIENT" ]; then
+            exec tmux -2 attach
+        fi
+    elif [ -x "$(which screen 2> /dev/null)" ]; then
+        if [ -z "$(ps uxc | grep screen)" ]; then
+            exec screen -D -RR
+        fi
+    fi
+fi
+
+# aliases
+alias histop='cat "$HISTFILE"|nkf -w|cut -d" " -f1|sort|uniq -c|sort -nr'
+alias mew='emacs -nw -e mew'
+if [ -x "$(which a2ps 2> /dev/null)" ]; then
+    alias a2ps='a2ps --prologue=color'
+fi
+if [ -x "$(which aspell 2> /dev/null)" ]; then
+    alias aspell='aspell --per-conf=$HOME/.aspell/aspell.conf'
+fi
+if [ -x "$(which ipython 2> /dev/null)" ]; then
+    alias pylab='ipython --pylab'
+fi
+if [ -x "$(which lesspipe_utf8.sh 2> /dev/null)" ]; then
+    export LESSOPEN='|lesspipe_utf8.sh %s'
+    export LESSCOLOR=1
+fi
+if [ -x "$(which pygmentize-console 2> /dev/null)" ]; then
+    export LESSCOLORIZER=pygmentize-console
+fi
+if [ -x "$(which gisty 2> /dev/null)" ]; then
+    export GISTY_DIR="$HOME/Documents/gists"
+    export GISTY_ACCESS_TOKEN=''
+fi
+if [ -x "$(which rlwrap 2> /dev/null)" ]; then
+    export RLWRAP_HOME="$HOME/.shell/cache"
+    alias rlwrap='rlwrap -pred'
+    for cmd in sftp telnet ocaml; do
+        if [ -x "$(which $cmd 2> /dev/null)" ]; then
+            alias $cmd="rlwrap $cmd"
+        fi
+    done
+fi
+# aliases for Mac OS X
+if [ -f "$HOME/Library/bin/fcd.sh" ]; then
+    alias fcd="source $HOME/Library/bin/fcd.sh"
+fi
+if [ -x /Applications/MacVim.app/Contents/MacOS/Vim ]; then
+    alias vim=/Applications/MacVim.app/Contents/MacOS/Vim
+    export EDITOR=/Applications/MacVim.app/Contents/MacOS/Vim
+fi
+if [ -x /Applications/GitX.app/Contents/Resources/gitx ]; then
+    alias gitx=/Applications/GitX.app/Contents/Resources/gitx
+fi
+if [ -x /Applications/Conversion.app/Contents/Resources/ffmpeg ]; then
+    alias ffmpeg=/Applications/Conversion.app/Contents/Resources/ffmpeg
+fi
+# settings for Mac OS X WorkShop
+if [ -d /usr/osxws ]; then
+    # man with man.conf of osxws
+    if [ -f /usr/osxws/etc/man.conf ]; then
+        alias man='man -C /usr/osxws/etc/man.conf'
+    fi
+    if [ -n "$(ps uxc|grep emacs)" ]; then
+        alias emacs='emacsclient -nw'
+        alias mew='emacs -nw -e mew'
+    else
+        alias emacs='openemacs'
+        alias mew='openemacs -nw -e mew'
+    fi
+    # use /usr/bin/less
+    alias  less='/usr/bin/less'
+    export PAGER='/usr/bin/less'
+fi
+
+# show date and users when first ssh connection is established
+if [ -n "$SSH_CLIENT" ]; then
+    if [ -z "$WINDOW" ] || [ "$WINDOW" = 0 ]; then
+        LANG=C LC_ALL=C date +'%Y/%m/%d %a'; w
+    fi
+fi
