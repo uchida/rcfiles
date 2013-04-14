@@ -1,0 +1,7 @@
+# -*- shell-script -*-
+# ~/.shell/bashrc-local: the local machine specific bash run commands
+
+# exec zsh, if available
+#if [ -x "$(which zsh 2> /dev/null)" ]; then
+#    exec zsh
+#fi

@@ -28,3 +28,8 @@ for prefix in '/' '/usr/local'; do
         source "$prefix/etc/bash_completion"
     fi
 done
+
+# load local bashrc
+if [ -s "$HOME/.shell/bashrc-local" ]; then
+    source "$HOME/.shell/bashrc-local"
+fi

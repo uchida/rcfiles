@@ -25,6 +25,7 @@ install_bash: install_shcommon
 	ln -s $(HOME)/.shell/profile $(HOME)/.bash_profile
 	rm -f $(HOME)/.bashrc;
 	ln -s $(PWD)/bash/bashrc $(HOME)/.bashrc
+	test -f $(HOME)/.shell/bashrc-local || cp $(PWD)/bash/bashrc-local.sample $(HOME)/.shell/bashrc-local
 
 install_zsh: install_shcommon
 	rm -f $(HOME)/.zshenv;
