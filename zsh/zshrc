@@ -75,7 +75,11 @@ zstyle ':vcs_info:hg:*' formats '%F{1}%u%F{7}[%b:%F{2}%m%F{7}]'
 zstyle ':vcs_info:hg:*' actionformats "%F{1}%u%F{7}[(%F{1}%a%F{7})%b:%F{2}%m%F{7}]"
 zstyle ':vcs_info:hg:*' branchformat "%F{2}%b%F{7}:%r"
 zstyle ':vcs_info:hg:*' hgrevformat "%r"
-update_vcs_info () {
+git status -s 2> /dev/null
+function update_vcs_info () {
+    if [ -n "$(git status -s 2> /dev/null | grep "^??")" ]; then
+        zstyle ':vcs_info:git:*' unstagedstr "?U"
+    fi
     vcs_info
 }
 RPROMPT='${vcs_info_msg_0_}'
