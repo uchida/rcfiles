@@ -76,12 +76,13 @@ zstyle ':vcs_info:hg:*' actionformats "%F{1}%u%F{7}[(%F{1}%a%F{7})%b:%F{2}%m%F{7
 zstyle ':vcs_info:hg:*' branchformat "%F{2}%b%F{7}:%r"
 zstyle ':vcs_info:hg:*' hgrevformat "%r"
 function update_vcs_info () {
-    untrackedstr=''
-    if [ -n "$(git status -s 2> /dev/null | grep "^??")" ]; then
-        untrackedstr='%F{1}?%F{7}'
-    fi
     vcs_info
-    vcs_info_msg_0_="$untrackedstr$vcs_info_msg_0_"
+    if [ -n "$(git status -s 2> /dev/null | grep "^??")" ]; then
+        vcs_info_msg_0_="%F{1}?%F{7}$vcs_info_msg_0_"
+    fi
+    if [ -n "$(git rev-list origin/master..master 2>/dev/null)" ]; then
+        vcs_info_msg_0_="%F{1}*%F{7}$vcs_info_msg_0_"
+    fi
 }
 RPROMPT='${vcs_info_msg_0_}'
 autoload -Uz add-zsh-hook
