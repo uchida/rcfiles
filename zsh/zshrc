@@ -88,14 +88,6 @@ RPROMPT='${vcs_info_msg_0_}'
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd update_vcs_info
 
-# for z.sh
-if [ -x "$(which _z)" ]; then
-    function zaddpwd() {
-        _z --add "$(pwd -P)"
-    }
-    add-zsh-hook precmd zaddpwd
-fi
-
 # add additional completion definition
 fpath=("$HOME/.shell/zsh-completions/src" $fpath)
 
