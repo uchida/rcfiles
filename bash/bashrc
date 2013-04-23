@@ -32,6 +32,9 @@ for prefix in '/' '/usr/local'; do
 done
 if [ $BASHCOMP_LOADED -eq 0 ]; then
     if [ -s "$HOME/.shell/completion/bash_completion" ]; then
+        BASH_COMPLETION="$HOME/.shell/completion/bash_completion"
+        BASH_COMPLETION_DIR="$HOME/.shell/completion/completions"
+        BASH_COMPLETION_COMPAT_DIR="$HOME/.shell/completion/completions"
         source "$HOME/.shell/completion/bash_completion"
     fi
 fi

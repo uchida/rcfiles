@@ -28,6 +28,7 @@ install_bash: install_shcommon
 	rm -f $(HOME)/.bashrc;
 	ln -s $(PWD)/bash/bashrc $(HOME)/.bashrc
 	test -f $(HOME)/.shell/bashrc-local || cp $(PWD)/bash/bashrc-local.sample $(HOME)/.shell/bashrc-local
+	rm -f $(HOME)/.shell/completion;
 	ln -s $(PWD)/bash/bash-completion $(HOME)/.shell/completion
 
 install_zsh: install_shcommon
