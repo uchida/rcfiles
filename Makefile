@@ -24,7 +24,7 @@ install_shcommon: submodule
 
 install_bash: install_shcommon
 	rm -f $(HOME)/.bash_profile;
-	ln -s $(HOME)/.shell/profile $(HOME)/.bash_profile
+	ln -s $(PWD)/bash/bash_profile $(HOME)/.bash_profile
 	rm -f $(HOME)/.bashrc;
 	ln -s $(PWD)/bash/bashrc $(HOME)/.bashrc
 	test -f $(HOME)/.shell/bashrc-local || cp $(PWD)/bash/bashrc-local.sample $(HOME)/.shell/bashrc-local

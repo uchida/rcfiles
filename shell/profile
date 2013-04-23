@@ -52,8 +52,3 @@ fi
 if [ -s "$HOME/.shell/profile-local" ]; then
     source "$HOME/.shell/profile-local"
 fi
-
-# run commands for bash
-if [ -s "$HOME/.bashrc" ]; then
-    source "$HOME/.bashrc"
-fi

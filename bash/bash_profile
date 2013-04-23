@@ -1,0 +1,12 @@
+# -*- shell-script -*-
+# ~/.bash_profile: the bash initialization file
+
+# load the shell run command for startup
+if [ -s "$HOME/.shell/profile" ]; then
+    source "$HOME/.shell/profile"
+fi
+
+# run commands for bash
+if [ -s "$HOME/.bashrc" ]; then
+    source "$HOME/.bashrc"
+fi
