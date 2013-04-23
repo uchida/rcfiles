@@ -23,11 +23,19 @@ if ! echo "$PROMPT_COMMAND" | grep -q "\$PS1"; then
 fi
 
 # load bash_completion
+BASHCOMP_LOADED=0
 for prefix in '/' '/usr/local'; do
     if [ -s "$prefix/etc/bash_completion" ]; then
         source "$prefix/etc/bash_completion"
+        BASHCOMP_LOADED=1
     fi
 done
+if [ $BASHCOMP_LOADED -eq 0 ]; then
+    if [ -s "$HOME/.shell/completion/bash_completion" ]; then
+        source "$HOME/.shell/completion/bash_completion"
+    fi
+fi
+unset BASHCOMP_LOADED
 
 # load local bashrc
 if [ -s "$HOME/.shell/bashrc-local" ]; then

@@ -10,3 +10,6 @@
 [submodule "zsh/zsh-completions"]
 	path = zsh/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
+[submodule "bash/bash-completion"]
+	path = bash/bash-completion
+	url = http://anonscm.debian.org/git/bash-completion/bash-completion.git

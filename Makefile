@@ -2,7 +2,10 @@ install: install_zsh install_vim install_tmux
 
 PWD=$(shell pwd)
 
-install_shcommon:
+submodule:
+	git submodule update --init
+
+install_shcommon: submodule
 	mkdir -p $(HOME)/.shell
 	rm -f $(HOME)/.shell/profile
 	ln -s $(PWD)/shell/profile $(HOME)/.shell/
@@ -13,7 +16,6 @@ install_shcommon:
 	test -f $(HOME)/.shell/rc-local || cp $(PWD)/shell/rc-local.sample $(HOME)/.shell/rc-local
 	rm -f $(HOME)/.inputrc;
 	ln -s $(PWD)/shell/inputrc $(HOME)/.inputrc
-	git submodule update --init
 	mkdir -p $(HOME)/.shell/scripts
 	rm -rf $(HOME)/.shell/scripts/z
 	ln -s $(PWD)/shell/z $(HOME)/.shell/scripts/
@@ -26,6 +28,7 @@ install_bash: install_shcommon
 	rm -f $(HOME)/.bashrc;
 	ln -s $(PWD)/bash/bashrc $(HOME)/.bashrc
 	test -f $(HOME)/.shell/bashrc-local || cp $(PWD)/bash/bashrc-local.sample $(HOME)/.shell/bashrc-local
+	ln -s $(PWD)/bash/bash-completion $(HOME)/.shell/completion
 
 install_zsh: install_shcommon
 	rm -f $(HOME)/.zshenv;
@@ -36,8 +39,7 @@ install_zsh: install_shcommon
 	rm -rf $(HOME)/.shell/zsh-completions
 	ln -s $(PWD)/zsh/zsh-completions $(HOME)/.shell/
 
-install_vim:
-	git submodule update --init
+install_vim: submodule
 	rm -f $(HOME)/.vimrc;
 	ln -s $(PWD)/vim/vimrc $(HOME)/.vimrc
 	mkdir -p $(HOME)/.vim;
@@ -68,6 +70,7 @@ install_newsbeuter:
 	test -f $(HOME)/.newsbeuter/config-local || cp $(PWD)/newsbeuter/config-local.sample $(HOME)/.newsbeuter/config-local
 
 .PHONY: install
+.PHONY: submodule
 .PHONY: install_shcommon
 .PHONY: install_bash
 .PHONY: install_zsh
