@@ -16,10 +16,10 @@ for prefix in '/opt/local' '/usr/osxws'; do
 done
 for pth in "$HOME/local" "$HOME"; do
     if ! echo "$PATH" | grep -q "$pth/bin"; then
-        test -d "$pth" && PATH="$pth:$PATH"
+        test -d "$pth" && PATH="$pth/bin:$PATH"
     fi
     if ! echo "$MANPATH" | grep -q "$pth/man"; then
-        test -d "$pth" && MANPATH="$pth:$MANPATH"
+        test -d "$pth" && MANPATH="$pth/man:$MANPATH"
     fi
 done
 unset prefix pth
