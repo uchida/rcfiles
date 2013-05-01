@@ -9,6 +9,11 @@ compctl -/g '*.yap' yaplot
 compctl -/g '*.plt' gnuplot
 compctl -/g '*.src.rpm' rpmbuild
 
+# completion
+if [ -x "$(which pip 2> /dev/null)" ]; then
+    eval "$(pip completion --zsh)"
+fi
+
 # Mac OS X specific
 if [ -x /usr/bin/osascript ]; then
     # customize for X11

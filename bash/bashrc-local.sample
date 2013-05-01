@@ -5,3 +5,8 @@
 #if [ -x "$(which zsh 2> /dev/null)" ]; then
 #    exec zsh
 #fi
+#
+# completion
+if [ -x "$(which pip 2> /dev/null)" ]; then
+    eval "$(pip completion --bash)"
+fi
