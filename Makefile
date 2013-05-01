@@ -14,8 +14,6 @@ install_shcommon: submodule
 	ln -s $(PWD)/shell/rc $(HOME)/.shell/
 	test -f $(HOME)/.shell/profile-local || cp $(PWD)/shell/profile-local.sample $(HOME)/.shell/profile-local
 	test -f $(HOME)/.shell/rc-local || cp $(PWD)/shell/rc-local.sample $(HOME)/.shell/rc-local
-	rm -f $(HOME)/.inputrc;
-	ln -s $(PWD)/shell/inputrc $(HOME)/.inputrc
 	mkdir -p $(HOME)/.shell/scripts
 	rm -rf $(HOME)/.shell/scripts/z
 	ln -s $(PWD)/shell/z $(HOME)/.shell/scripts/

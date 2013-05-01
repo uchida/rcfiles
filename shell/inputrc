@@ -1,6 +1,0 @@
-set meta-flag on
-set convert-meta off
-set input-meta on
-set output-meta on
-"\C-p": history-search-backward
-"\C-n": history-search-forward

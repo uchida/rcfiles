@@ -10,6 +10,10 @@ fi
 HISTFILE="$HOME/.shell/cache/bash_history"
 HISTSIZE=100000
 
+# C-p/n as history search back/forward
+bind '"\C-p": history-search-backward'
+bind '"\C-n": history-search-forward'
+
 # the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
 PROMPT_HOST="$(hostname -s)"
 PROMPT_DIR='pwd | sed -e "s|$HOME|~|g" | sed -e "s|.*/\([^/]*\)/\([^/]*\)$|.../\1/\2|g"'
