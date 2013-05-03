@@ -8,7 +8,13 @@ export LC_ALL=ja_JP.UTF-8
 umask 022
 # path settings
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/X11/bin:/usr/sbin:/usr/bin:/sbin:/bin
-export MANPATH=/usr/local/share/man:/usr/X11R6/man:/usr/share/man
+export MANPATH=/usr/X11R6/man:/usr/share/man
+for dir in /usr/local/man /usr/local/share/man; do
+    if [ -d $dir ]; then
+        export MANPATH="$dir:$MANPATH"
+        break
+    fi
+done
 
 # proxy setting
 function reset_proxy () {

@@ -11,15 +11,16 @@ for prefix in '/opt/local' '/usr/osxws'; do
     for pth in "$prefix/share/man" "$prefix/man"; do
         if ! echo "$MANPATH" | grep -q "$pth"; then
             test -d "$pth" && MANPATH="$pth:$MANPATH"
+            break
         fi
     done
 done
-for pth in "$HOME/local" "$HOME"; do
+for pth in "$HOME/Library" "$HOME"; do
     if ! echo "$PATH" | grep -q "$pth/bin"; then
-        test -d "$pth" && PATH="$pth/bin:$PATH"
+        test -d "$pth/bin" && PATH="$pth/bin:$PATH"
     fi
-    if ! echo "$MANPATH" | grep -q "$pth/man"; then
-        test -d "$pth" && MANPATH="$pth/man:$MANPATH"
+    if ! echo "$MANPATH" | grep -q "$pth/share/man"; then
+        test -d "$pth/share/man" && MANPATH="$pth/share/man:$MANPATH"
     fi
 done
 unset prefix pth
