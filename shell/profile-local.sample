@@ -59,10 +59,10 @@ fi
 
 # perl setting with cpanm on user directory
 if [ -d "$HOME/Library/Perl" ]; then
-    if [ -z "$(echo $PATH | grep \"$HOME/Library/Perl/bin\")" ]; then
+    if [ -z "$(echo $PATH | grep "$HOME/Library/Perl/bin")" ]; then
         PATH="$HOME/Library/Perl/bin:$PATH"
     fi
-    if [ -z "$(echo $MANPATH | grep \"$HOME/Library/Perl/man\")" ]; then
+    if [ -z "$(echo $MANPATH | grep "$HOME/Library/Perl/man")" ]; then
         MANPATH="$HOME/Library/Perl/man:$MANPATH"
     fi
     export PERL5LIB="$HOME/Library/lib/perl5:$PERL5LIB"
@@ -73,7 +73,7 @@ fi
 # ruby setting with rbenv
 if [ -d "$HOME/Library/Ruby/rbenv"  ] ; then
     export RBENV_ROOT="$HOME/Library/Ruby/rbenv"
-    if [ -z "$(echo $PATH | grep \"$RBENV_ROOT/bin\")" ]; then
+    if [ -z "$(echo $PATH | grep "$RBENV_ROOT/bin")" ]; then
         export PATH="$RBENV_ROOT/bin:$PATH"
     fi
     if [ -x $(which rbenv 2> /dev/null) ]; then
