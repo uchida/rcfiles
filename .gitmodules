@@ -9,7 +9,7 @@
 	url = https://github.com/rupa/z.git
 [submodule "zsh/zsh-completions"]
 	path = zsh/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
 [submodule "bash/bash-completion"]
 	path = bash/bash-completion
-	url = http://anonscm.debian.org/git/bash-completion/bash-completion.git
+	url = http://github.com/uchida/bash-completion.git
