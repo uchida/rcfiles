@@ -5,7 +5,38 @@
 #if [ -x "$(which zsh 2> /dev/null)" ]; then
 #    exec zsh
 #fi
-#
+
+# load bash_completion
+BASHCOMP_LOADED=0
+for prefix in '/' '/usr/local'; do
+    if [ -s "$prefix/etc/bash_completion" ]; then
+        source "$prefix/etc/bash_completion"
+        BASHCOMP_LOADED=1
+    fi
+done
+if [ $BASHCOMP_LOADED -eq 0 ]; then
+    BCOMPSRC="$HOME/.shell/completion"
+    BASHVER=$(echo $BASH_VERSION | cut -d. -f 1,2)
+    if [ $(echo "$BASHVER >= 4.1 ) -eq 1 ]; then
+        BCOMPVER=2.1
+    elif [ $(echo "$BASHVER >= 3.2 ) -eq 1 ]; then
+        BCOMPVER=1.3
+    elif [ $(echo "$BASHVER >= 2.04 ) -eq 1 ]; then
+        BCOMPVER=1.1
+    fi
+    if [ -s "$BCOMPSRC" ]; then
+        BCOMPVER_REAL=$(grep 'RELEASE:' "$BCOMPSRC" | sed -e 's/.*: \(.*\)/\1/')
+        if [ "$BCOMPVER_REAL" = "$BCOMPVER" ]; then
+            BASH_COMPLETION="$BCOMPSRC"
+            BASH_COMPLETION_DIR="$(dirname $BASH_COMPLETION)"
+            BASH_COMPLETION_COMPAT_DIR="$BASH_COMPLETION_DIR/compeletions"
+            source "$BASH_COMPLETION"
+        fi
+	    unset BCOMPVER_REAL
+    fi
+    unset BASHVER BCOMPSRC
+fi
+unset BASHCOMP_LOADED
 # completion
 if [ -x "$(which pip 2> /dev/null)" ]; then
     eval "$(pip completion --bash)"

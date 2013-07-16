@@ -25,25 +25,6 @@ UPDATE_PS1='export PS1=$(echo "$PROMPT_HOST:$(eval $PROMPT_DIR) $USER> ")'
 if ! echo "$PROMPT_COMMAND" | grep -q "\$PS1"; then
     export PROMPT_COMMAND="$UPDATE_PS1;$PROMPT_COMMAND"
 fi
-
-# load bash_completion
-BASHCOMP_LOADED=0
-for prefix in '/' '/usr/local'; do
-    if [ -s "$prefix/etc/bash_completion" ]; then
-        source "$prefix/etc/bash_completion"
-        BASHCOMP_LOADED=1
-    fi
-done
-if [ $BASHCOMP_LOADED -eq 0 ]; then
-    if [ -s "$HOME/.shell/completion/bash_completion" ]; then
-        BASH_COMPLETION="$HOME/.shell/completion/bash_completion"
-        BASH_COMPLETION_DIR="$HOME/.shell/completion/completions"
-        BASH_COMPLETION_COMPAT_DIR="$HOME/.shell/completion/completions"
-        source "$HOME/.shell/completion/bash_completion"
-    fi
-fi
-unset BASHCOMP_LOADED
-
 # load local bashrc
 if [ -s "$HOME/.shell/bashrc-local" ]; then
     source "$HOME/.shell/bashrc-local"
