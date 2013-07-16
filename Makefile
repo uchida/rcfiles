@@ -2,8 +2,21 @@ install: install_zsh install_vim install_tmux
 
 PWD=$(shell pwd)
 
+GIT_AVAILABLE=$(shell test -x "$(shell which git)" && echo 1)
+ifeq ($(GIT_AVAILABLE),1)
 submodule:
 	git submodule update --init
+else
+submodule:
+	curl -Lo - https://github.com/gmarik/vundle/archive/master.tar.gz | \
+		tar xf - -C vim/ -s '|^\(.*\)-master/|\1/|'
+	curl -Lo - https://github.com/uchida/tiny-templates/archive/master.tar.gz | \
+		tar xf - -C vim/ -s '|^\(.*\)-master/|\1/|'
+	curl -Lo - https://github.com/rupa/z/archive/master.tar.gz | \
+		tar xf - -C shell/ -s '|^\(.*\)-master/|\1/|'
+	curl -Lo - https://github.com/zsh-users/zsh-completions/archive/master.tar.gz | \
+		tar xf - -C zsh/ -s '|^\(.*\)-master/|\1/|'
+endif
 
 install_shcommon: submodule
 	mkdir -p $(HOME)/.shell
@@ -20,7 +33,33 @@ install_shcommon: submodule
 	mkdir -p $(HOME)/.shell/cache
 	touch $(HOME)/.shell/cache/z
 
-install_bash: install_shcommon
+BASH_VERSION=$(shell bash --version | head -n 1 | sed -e 's/.*version \([.0-9]*\).*/\1/' | cut -d. -f 1,2)
+ifeq ($(GIT_AVAILABLE),1)
+install_bashcompletion:
+	rm -f $(HOME)/.shell/completion;
+	test $(shell echo "2.04 <= $(BASH_VERSION) && $(BASH_VERSION) < 3.2" | bc) -eq 1 && \
+		(cd $(PWD)/bash/bash-completion && git checkout 1.1) || :
+	test $(shell echo "3.2 <= $(BASH_VERSION) && $(BASH_VERSION) < 4.1" | bc) -eq 1 && \
+		(cd $(PWD)/bash/bash-completion && git checkout 1.3) || :
+	test $(shell echo "4.1 <= $(BASH_VERSION)" | bc) -eq 1 && \
+		(cd $(PWD)/bash/bash-completion && git checkout 2.1) || :
+	ln -s $(PWD)/bash/bash-completion $(HOME)/.shell/completion)
+else
+install_bashcompletion:
+	test $(shell echo "2.04 <= $(BASH_VERSION) && $(BASH_VERSION) < 3.2" | bc) -eq 1 && \
+		curl -Lo - https://github.com/uchida/bash-completion/archive/1.1.tar.gz | \
+		tar xf - -C $(PWD)/bash -s '|^[a-z\-]*-[.0-9]*/|bash-completion/|' || :
+	test $(shell echo "3.2 <= $(BASH_VERSION) && $(BASH_VERSION) < 4.1" | bc) -eq 1 && \
+		curl -Lo - https://github.com/uchida/bash-completion/archive/1.3.tar.gz | \
+		tar xf - -C $(PWD)/bash -s '|^[a-z\-]*-[.0-9]*/|bash-completion/|' || :
+	test $(shell echo "4.1 <= $(BASH_VERSION)" | bc) -eq 1 && \
+		curl -Lo - https://github.com/uchida/bash-completion/archive/2.1.tar.gz | \
+		tar xf - -C $(PWD)/bash -s '|^[a-z\-]*-[.0-9]*/|bash-completion/|' || :
+	rm -f $(HOME)/.shell/completion;
+	ln -s $(PWD)/bash/bash-completion $(HOME)/.shell/completion
+endif
+
+install_bash: install_shcommon install_bashcompletion
 	rm -f $(HOME)/.bash_profile;
 	ln -s $(PWD)/bash/bash_profile $(HOME)/.bash_profile
 	rm -f $(HOME)/.bashrc;
@@ -71,6 +110,7 @@ install_newsbeuter:
 .PHONY: install
 .PHONY: submodule
 .PHONY: install_shcommon
+.PHONY: install_bashcompletion
 .PHONY: install_bash
 .PHONY: install_zsh
 .PHONY: install_vim
