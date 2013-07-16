@@ -15,8 +15,8 @@ bind '"\C-p": history-search-backward'
 bind '"\C-n": history-search-forward'
 
 # the prompt style: "host:dir user> ", deeper PATH is abbreviated as ...
-PROMPT_HOST="$(hostname -s)"
-PROMPT_DIR='pwd | sed -e "s|$HOME|~|g" | sed -e "s|.*/\([^/]*\)/\([^/]*\)$|.../\1/\2|g"'
+PROMPT_HOST="$(hostname | cut -d. -f1)"
+PROMPT_DIR='pwd | sed -e "s|$HOME|~|" | sed -e "s|.*/\(.*\)/\(.*\)$|.../\1/\2|"'
 # the prompt shows host with red color in the ssh connection
 if [ -n "$SSH_CLIENT" ]; then
     PROMPT_HOST="\[\033[31m\]$PROMPT_HOST\[\033[0m\]"
