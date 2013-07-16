@@ -4,29 +4,29 @@
 # path setting
 for prefix in '/opt/local' '/usr/osxws'; do
     for pth in "$prefix/bin" "$prefix/sbin"; do
-        if ! echo "$PATH" | grep -q "$pth"; then
+        if ! echo "$PATH" | grep "$pth" >/dev/null; then
             test -d "$pth" && PATH="$pth:$PATH"
         fi
     done
     for pth in "$prefix/share/man" "$prefix/man"; do
-        if ! echo "$MANPATH" | grep -q "$pth"; then
+        if ! echo "$MANPATH" | grep "$pth" >/dev/null; then
             test -d "$pth" && MANPATH="$pth:$MANPATH"
             break
         fi
     done
 done
 for pth in "$HOME/Library" "$HOME"; do
-    if ! echo "$PATH" | grep -q "$pth/bin"; then
+    if ! echo "$PATH" | grep "$pth/bin" >/dev/null; then
         test -d "$pth/bin" && PATH="$pth/bin:$PATH"
     fi
-    if ! echo "$MANPATH" | grep -q "$pth/share/man"; then
+    if ! echo "$MANPATH" | grep "$pth/share/man" >/dev/null; then
         test -d "$pth/share/man" && MANPATH="$pth/share/man:$MANPATH"
     fi
 done
 unset prefix pth
 export PATH MANPATH
 
-if ! echo "$PATH" | grep -q /usr/texbin; then
+if ! echo "$PATH" | grep /usr/texbin >/dev/null; then
     export PATH=/usr/texbin:$PATH
 fi
 
