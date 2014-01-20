@@ -21,7 +21,18 @@ call vundle#rc()
 "Bundle 'Shougo/neocomplcache'
 "Bundle 'Shougo/neosnippet'
 "Bundle 'pangloss/vim-javascript'
-"Bundle "lepture/vim-jinja"
+"Bundle 'lepture/vim-jinja'
+"Bundle 'c9s/perlomni.vim'
+"Bundle 'Shougo/unite.vim'
+"Bundle 'airblade/vim-gitgutter'
+"Bundle 't9md/vim-unite-ack'
+"Bundle 'h1mesuke/unite-outline'
+"Bundle 'ujihisa/unite-locate'
+"Bundle 'tacroe/unite-alias'
+"Bundle 'thinca/vim-unite-history'
+"Bundle 'osyo-manga/unite-quickfix'
+"Bundle 'donnut/vim-php54-syntax'
+"Bundle 'sh.vim'
 "Bundle 'nanotech/jellybeans.vim'
 filetype plugin indent on
 
@@ -127,7 +138,28 @@ autocmd  FileType python let b:did_ftplugin=1
 if !exists('g:neocomplcache_force_omni_patterns')
       let g:neocomplcache_force_omni_patterns={}
 endif
+if !exists('g:neocomplcache_omni_patterns')
+      let g:neocomplcache_omni_patterns={}
+endif
 let g:neocomplcache_force_omni_patterns.python='[^. \t]\.\w*'
+let g:neocomplcache_omni_patterns.python='[^. \t]\.\w*'
+
+" perlomni
+let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" unite.vim
+let g:unite_data_directory=expand('~/.vim/unite')
+let g:ref_cache_dir=expand('~/.vim/ref')
+
+" shell script
+let g:sh_indent_case_labels=1
+if has("autocmd")
+    " for Makefile
+    autocmd BufRead *.rst setlocal softtabstop=2 shiftwidth=2
+endif
+
+let php_folding=0
 
 " jellybeans: A colorful, dark color scheme
 " https://github.com/nanotech/jellybeans.vim
